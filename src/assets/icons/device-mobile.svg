@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="25.903284"
+   height="46.732937"
+   viewBox="0 0 6.8535772 12.364757"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   sodipodi:docname="mobile.svg"
+   inkscape:export-filename="mobile.svg"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="11.160606"
+     inkscape:cx="20.473799"
+     inkscape:cy="23.789031"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="6.8535771"
+       height="12.364757"
+       id="page1"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-3.3296769,-0.19354792)">
+    <rect
+       style="fill:#000000;fill-opacity:0;stroke:#ffffff;stroke-width:0.474;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+       id="rect1"
+       width="6.3795772"
+       height="11.890757"
+       x="3.5666769"
+       y="0.43054792"
+       ry="0.80179322"
+       inkscape:export-filename="C:\GitHub\AnthemSoftwareWebsite\AnthemWeb\public\mobile.svg"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <rect
+       style="fill:#000000;fill-opacity:0;stroke:#ffffff;stroke-width:0.316;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+       id="rect2"
+       width="4.8507972"
+       height="10.536572"
+       x="4.3310666"
+       y="1.1192486"
+       ry="0.47354302"
+       rx="0.4625524" />
+    <rect
+       style="fill:#000000;fill-opacity:0;stroke:#ffffff;stroke-width:0.262;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+       id="rect3"
+       width="3.0853381"
+       height="0.4665648"
+       x="5.2563658"
+       y="1.0993984"
+       rx="0.084887072"
+       ry="0.047709074" />
+  </g>
+</svg>
