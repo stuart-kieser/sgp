@@ -4,7 +4,7 @@ services:
   # Uncomment the following to use postgres
   postgres:
     restart: always
-    image: postgres:latest
+    image: postgres:15
     volumes:
       - pgdata:/var/lib/postgresql/data
     environment:
@@ -16,6 +16,10 @@ services:
 
   payload:
     image: node:22-alpine
+    restart: always
+    environment:
+      DATABASE_URL: ${DATABASE_URI}
+      PAYLOAD_SECRET: ${PAYLOAD_SECRET}
     ports:
       - '3000:3000'
     volumes:

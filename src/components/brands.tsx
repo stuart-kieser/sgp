@@ -1,13 +1,13 @@
-import { getBrands } from "@/actions/getBrands";
+import { getBrands } from '@/actions/getBrands'
 import config from '@payload-config'
 import { getPayload } from 'payload'
-import BrandCard from "./BrandCard";
+import BrandCard from './BrandCard'
 
 export default async function Brands() {
   const payload = await getPayload({ config })
 
-  const brands = await getBrands(payload);
-  console.log(brands.docs[0]);
+  const brands = await getBrands(payload)
+
   return (
     <section className="h-auto py-10 bg-[#101010] content-center">
       <h1 className="text-4xl py-12 text-white font-sabre text-center">Our Brands</h1>
@@ -17,5 +17,5 @@ export default async function Brands() {
         ))}
       </div>
     </section>
-  );
+  )
 }

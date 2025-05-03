@@ -1,37 +1,73 @@
+'use client'
+import { useState } from 'react'
+
 export default function Contactform() {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [text, setText] = useState('')
+  const [number, setNumber] = useState('')
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault()
+
+    const form = fetch('/api/', {
+      method: 'POST',
+      body: JSON.stringify({
+        name,
+        email,
+        number,
+        text,
+      }),
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+
+    alert('Thank you for reaching out!')
+    // Clear form
+    setName('')
+    setEmail('')
+    setNumber('')
+    setText('')
+  }
+
   return (
-    <div className="w-full p-6  shadow-lg rounded-lg text-left pl-10 pt-10 flex justify-center">
-      <form className="w-[70%] flex flex-col justify-center">
-        <div>
+    <div className="w-full p-6 shadow-lg rounded-lg text-left pl-10 pt-10 flex justify-center">
+      <form className="w-[70%] flex flex-col justify-center" onSubmit={handleSubmit}>
+        <div className="mb-4">
           <label className="block text-accent font-medium mb-2">Name:</label>
           <input
             type="text"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-accent"
           />
         </div>
-        <div>
+        <div className="mb-4">
           <label className="block text-accent font-medium mb-2">Email:</label>
           <input
             type="email"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-accent"
           />
         </div>
-        <div>
-          <label className="block text-accent font-medium mb-2">
-            Number:
-          </label>
+        <div className="mb-4">
+          <label className="block text-accent font-medium mb-2">Number:</label>
           <input
             type="tel"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={number}
+            onChange={(e) => setNumber(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-accent"
           />
         </div>
-        <div>
-          <label className="block text-accent font-medium mb-2">
-            Ask us:
-          </label>
+        <div className="mb-4">
+          <label className="block text-accent font-medium mb-2">Ask us:</label>
           <textarea
             rows={5}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-accent"
           ></textarea>
         </div>
         <button
@@ -42,5 +78,5 @@ export default function Contactform() {
         </button>
       </form>
     </div>
-  );
+  )
 }

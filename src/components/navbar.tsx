@@ -64,31 +64,6 @@ const NavBar: React.FC<{ className: string }> = ({ className }) => {
             Gallery
           </button>
         </NavigationMenuItem>
-        {/* <NavigationMenuItem>
-          <button
-            onClick={() => router.push("/blog")}
-            className='group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 font-medium transition-colors hover:text-accent-foreground focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 group bg-[#00a79d] hover:bg-teal-500'
-          >
-            Blog
-          </button>
-        </NavigationMenuItem> */}
-        {/* <NavigationMenuItem>
-          <button
-            onClick={() => router.push("/events")}
-            className='group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 font-medium transition-colors hover:text-accent-foreground focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 group bg-[#00a79d] hover:bg-teal-500'
-
-          >
-            Events
-          </button>
-        </NavigationMenuItem> */}
-        {/* <NavigationMenuItem>
-          <button
-            onClick={() => router.push("/store")}
-            className='group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 font-medium transition-colors hover:text-accent-foreground focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 group bg-[#00a79d] hover:bg-teal-500'
-          >
-            Store
-          </button>
-        </NavigationMenuItem> */}
         <NavigationMenuItem>
           <button
             onClick={() => router.push("/contact-us")}
