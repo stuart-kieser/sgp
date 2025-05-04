@@ -6,7 +6,7 @@ const mailgun = new Mailgun(FormData)
 
 export async function POST(request: NextRequest) {
   const { name, email, text, number } = await request.json()
-  const domain = process.env.MAILGUN_DOMAIN
+  const domain = process.env.MAILGUN_DOMAIN || ''
 
   const mg = mailgun.client({
     username: 'api',
@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
 
   const messageData = {
     from: 'Contact Form <contact@sgperf.co.za>',
-    to: 'service@sgperformance.co.za',
+    to: 'stuart@kieser.co.za',
     subject: `New Contact Enquiry from ${name}`,
     text: `Hello, you have a new contact enquiry from ${name}, reachable at ${email}, ${number}. Contact Enquiry:: ${text}`,
   }
