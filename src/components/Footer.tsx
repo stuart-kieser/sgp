@@ -1,27 +1,12 @@
-import { Facebook, Instagram, InstagramIcon } from 'lucide-react'
-import Link from 'next/link'
+import { Facebook, Instagram } from 'lucide-react'
 
 export default function FooterBar() {
   return (
     <footer className="bg-teal-600 text-white py-6">
-      <div className="grid grid-cols-1 sm:grid-cols-3 w-full place-content-center place-items-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 w-full place-content-center place-items-center">
         <div className="mb-4 md:mb-0">
           <h2 className="text-xl font-bold font-sabre">SGPerformance</h2>
           <p className="text-gray-800">© 2024 SGPerformance. All rights reserved.</p>
-        </div>
-        <div className="flex space-x-4">
-          <Link href="/gallery" className="hover:text-gray-300">
-            Gallery
-          </Link>
-          <Link href="/contact-us" className="hover:text-gray-300">
-            Contact
-          </Link>
-          <Link href="/privacy" className="hover:text-gray-300">
-            Privacy Policy
-          </Link>
-          <Link href="/terms" className="hover:text-gray-300">
-            Terms of Service
-          </Link>
         </div>
         <div className="mt-4 md:mt-0">
           <div className="flex space-x-4">
