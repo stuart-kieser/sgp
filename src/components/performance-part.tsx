@@ -1,11 +1,5 @@
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import Image from "next/image";
+import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/card'
+import Image from 'next/image'
 
 export default function PerformancePart(performance_part: any) {
   return (
@@ -23,5 +17,5 @@ export default function PerformancePart(performance_part: any) {
         />
       </CardContent>
     </Card>
-  );
+  )
 }

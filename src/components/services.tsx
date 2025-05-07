@@ -1,8 +1,5 @@
 import { Card, CardTitle, CardDescription } from '@/components/ui/card'
-// import CardCarousel from "./cardcarousel";
-// import { Link } from "react-router-dom";
 import data from '../data'
-import Image from 'next/image'
 
 const services = data.getServices()
 

@@ -8,8 +8,6 @@ const gallery = await payload.find({
   collection: 'media',
 })
 
-console.log(gallery)
-
 export default function Gallery() {
   return (
     <div className="">

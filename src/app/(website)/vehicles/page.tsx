@@ -7,7 +7,6 @@ const payload = await getPayload({ config })
 const vehicles = await getVehicles(payload)
 
 export default async function Vehicles() {
-  console.log(vehicles.docs)
   return (
     <div className="bg-[#101010] text-white gap-4">
       <div
