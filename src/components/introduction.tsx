@@ -25,7 +25,7 @@ export default function Introduction() {
     },
     {
       heading: 'SG Suzuki Jimny',
-      para: "With our Jimny Turbo conversion kit. By upgrading to the SG Performance Garrett GT17 Turbo, boosting the engine's output to 130kW and 250Nm.",
+      para: "With our Jimny Turbo conversion kit. By upgrading to the SGPerformance Garrett GT17 Turbo, boosting the engine's output to 130kW and 250Nm.",
       link: '/services',
       link_text: 'Explore The Jimny',
       backgroundImage: `url('/images/jimny6.jpg')`,

@@ -26,7 +26,7 @@ export default function Home() {
           <li className="pb-4">
             The <span className="text-2xl">SG Jimny</span>
           </li>
-          <li>SG Performance Garrett GT17 Turbo</li>
+          <li>SGPerformance Garrett GT17 Turbo</li>
           <li>+ 130kW and 250Nm</li>
         </ul>
       </section>
