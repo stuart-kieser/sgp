@@ -1,0 +1,12 @@
+services:
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    network_mode: 'host'
+    volumes:
+      - certs:/etc/letsencrypt
+      - certbot-logs:/var/log/letsencrypt
+    command: certonly --standalone --non-interactive --agree-tos --email stuart@kieser.co.za -d sgperf.co.za
+volumes:
+  certs:
+  certbot-logs:
