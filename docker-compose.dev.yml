@@ -1,5 +1,26 @@
 services: # Postgres Database Service
   # Payload (Node.js App) Service
+  payload:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    # restart: always
+    environment:
+      DATABASE_URL: ${DATABASE_URI}
+      PAYLOAD_SECRET: ${PAYLOAD_SECRET}
+    ports:
+      - '3000:3000'
+    # volumes:
+    #   - .:/home/node/app
+    # - node_modules:/home/node/app/node_modules
+    # working_dir: /home/node/app/
+    # depends_on:
+    #   - postgres
+    env_file:
+      - .env
+    networks:
+      - my-network
+
   # Nginx Reverse Proxy Service
   nginx:
     image: nginx:latest
@@ -22,5 +43,6 @@ networks:
     external: true
 volumes:
   data:
+  pgdata:
   node_modules:
   certs:
