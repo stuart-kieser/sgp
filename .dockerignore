@@ -1,0 +1,12 @@
+# your local artifacts—you never need these during build
+node_modules
+.next
+dist
+coverage
+
+# git, editor, OS cruft
+.git
+.gitignore
+Dockerfile*
+README.md
+.DS_Store

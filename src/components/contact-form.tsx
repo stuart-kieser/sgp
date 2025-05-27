@@ -10,7 +10,7 @@ export default function Contactform() {
   const handleSubmit = (e: any) => {
     e.preventDefault()
 
-    const form = fetch('/api/', {
+    fetch('/api/', {
       method: 'POST',
       body: JSON.stringify({
         name,
