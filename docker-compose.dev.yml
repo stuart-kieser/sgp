@@ -4,10 +4,14 @@ services: # Postgres Database Service
     build:
       context: .
       dockerfile: Dockerfile.dev
+      extra_hosts:
+        - 'postgres:host-gateway'
+    extra_hosts:
+      - 'postgres:host-gateway'
     # restart: always
-    environment:
-      DATABASE_URL: ${DATABASE_URI}
-      PAYLOAD_SECRET: ${PAYLOAD_SECRET}
+    # environment:
+    # DATABASE_URL: ${DATABASE_URI}
+    # PAYLOAD_SECRET: ${PAYLOAD_SECRET}
     ports:
       - '3000:3000'
     # volumes:
@@ -22,27 +26,25 @@ services: # Postgres Database Service
       - my-network
 
   # Nginx Reverse Proxy Service
-  nginx:
-    image: nginx:latest
-    container_name: nginx-reverse-proxy
-    restart: always
-    ports:
-      - '80:80'
-      - '443:443'
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/conf.d:/etc/nginx/conf.d:ro
-      - certs:/etc/letsencrypt:ro
-    depends_on:
-      - payload
-    networks:
-      - my-network
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: nginx-reverse-proxy
+  #   restart: always
+  #   ports:
+  #     - '80:80'
+  #     - '443:443'
+  #   volumes:
+  #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./nginx/conf.d:/etc/nginx/conf.d:ro
+  #     - certs:/etc/letsencrypt:ro
+  #   depends_on:
+  #     - payload
+  #   networks:
+  #     - my-network
 
 networks:
   my-network:
     external: true
 volumes:
   data:
-  pgdata:
-  node_modules:
   certs:

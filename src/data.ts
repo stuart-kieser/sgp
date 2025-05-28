@@ -41,4 +41,6 @@ function getServices() {
   return services
 }
 
-export default { getServices }
+const exportedServices = { getServices }
+
+export default exportedServices

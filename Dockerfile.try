@@ -1,0 +1,45 @@
+FROM node:22-alpine AS base
+
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
+RUN corepack enable 
+WORKDIR /app
+
+COPY package.json pnpm-lock.yaml ./ 
+RUN pnpm install --frozen-lockfile
+
+FROM base AS builder
+WORKDIR /app
+RUN corepack enable
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+# ❌ REMOVE build from here:
+# RUN pnpm run build
+
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production HOSTNAME=0.0.0.0
+
+# Install dependencies and tools
+RUN apk add --no-cache libc6-compat
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Create the user and chown necessary directories
+RUN addgroup --system --gid 1001 nodejs \
+ && adduser --system --uid 1001 nextjs \
+ && mkdir -p /app/.next \
+ && chown -R nextjs:nodejs /app
+
+# Copy application source and dependencies
+COPY --from=deps --chown=nextjs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nextjs:nodejs /app ./
+
+# Use unprivileged user
+USER nextjs
+
+EXPOSE 3000
+
+# Run time build (when Postgres is available), then start app
+CMD ["sh", "-c", "npx payload migrate && pnpm build && pnpm start"]
