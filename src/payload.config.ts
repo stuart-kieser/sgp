@@ -9,9 +9,11 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-import { Vehicles } from './collections/Vehicles'
 import { Brands } from './collections/Brands'
-
+import PhotoBarGlobalConf from './globals/PhotoBarGlobal'
+import BrandsConf from './globals/BrandGlobal'
+import GalleryGlobalConf from './globals/GalleryGlobal'
+import VehiclesGlobalConf from './globals/VehilcesGlobal'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -22,7 +24,8 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Vehicles, Brands],
+  collections: [Users, Media, Brands],
+  globals: [PhotoBarGlobalConf, BrandsConf, GalleryGlobalConf, VehiclesGlobalConf],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

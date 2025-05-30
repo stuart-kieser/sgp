@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 export const Brands: CollectionConfig = {
-  slug: 'brands',
+  slug: 'brand',
   admin: {
     useAsTitle: 'make',
     defaultColumns: ['make'],

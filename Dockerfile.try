@@ -46,4 +46,4 @@ USER nextjs
 EXPOSE 3000
 
 # Run time build (when Postgres is available), then start app
-CMD ["sh", "-c", "npx payload migrate && pnpm build && pnpm start"]
+CMD ["sh", "-c", "pnpm build && pnpm start"]

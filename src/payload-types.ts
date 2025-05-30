@@ -69,8 +69,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
-    vehicles: Vehicle;
-    brands: Brand;
+    brand: Brand;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -79,8 +78,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    vehicles: VehiclesSelect<false> | VehiclesSelect<true>;
-    brands: BrandsSelect<false> | BrandsSelect<true>;
+    brand: BrandSelect<false> | BrandSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -88,8 +86,18 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'photo-bar': PhotoBar;
+    brands: Brand1;
+    gallery: Gallery;
+    vehicles: Vehicle;
+  };
+  globalsSelect: {
+    'photo-bar': PhotoBarSelect<false> | PhotoBarSelect<true>;
+    brands: BrandsSelect<false> | BrandsSelect<true>;
+    gallery: GallerySelect<false> | GallerySelect<true>;
+    vehicles: VehiclesSelect<false> | VehiclesSelect<true>;
+  };
   locale: null;
   user: User & {
     collection: 'users';
@@ -155,44 +163,7 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "vehicles".
- */
-export interface Vehicle {
-  id: number;
-  make: string;
-  model: string;
-  year: number;
-  engineType?: string | null;
-  transmission?: string | null;
-  drivetrain?: ('fwd' | 'rwd' | 'awd' | '4wd') | null;
-  modifications?:
-    | {
-        type?:
-          | (
-              | 'Engine'
-              | 'Exhaust'
-              | 'Suspension'
-              | 'Brakes'
-              | 'Interior'
-              | 'Exterior'
-              | 'Electronics'
-              | 'Wheels/Tires'
-              | 'Forced Induction'
-              | 'Fuel System'
-            )
-          | null;
-        description?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  photos?: (number | null) | Media;
-  notes?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "brands".
+ * via the `definition` "brand".
  */
 export interface Brand {
   id: number;
@@ -218,11 +189,7 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
-        relationTo: 'vehicles';
-        value: number | Vehicle;
-      } | null)
-    | ({
-        relationTo: 'brands';
+        relationTo: 'brand';
         value: number | Brand;
       } | null);
   globalSlug?: string | null;
@@ -302,32 +269,9 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "vehicles_select".
+ * via the `definition` "brand_select".
  */
-export interface VehiclesSelect<T extends boolean = true> {
-  make?: T;
-  model?: T;
-  year?: T;
-  engineType?: T;
-  transmission?: T;
-  drivetrain?: T;
-  modifications?:
-    | T
-    | {
-        type?: T;
-        description?: T;
-        id?: T;
-      };
-  photos?: T;
-  notes?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "brands_select".
- */
-export interface BrandsSelect<T extends boolean = true> {
+export interface BrandSelect<T extends boolean = true> {
   make?: T;
   photos?: T;
   notes?: T;
@@ -365,6 +309,173 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "photo-bar".
+ */
+export interface PhotoBar {
+  id: number;
+  images?:
+    | {
+        image: number | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brands".
+ */
+export interface Brand1 {
+  id: number;
+  brands?:
+    | {
+        make: string;
+        photos?: (number | null) | Media;
+        notes?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery".
+ */
+export interface Gallery {
+  id: number;
+  images?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vehicles".
+ */
+export interface Vehicle {
+  id: number;
+  vehicles?:
+    | {
+        make?: string | null;
+        model?: string | null;
+        year?: number | null;
+        engineType?: string | null;
+        transmission?: string | null;
+        drivetrain?: ('fwd' | 'rwd' | 'awd' | '4wd') | null;
+        modifications?:
+          | {
+              type?:
+                | (
+                    | 'Engine'
+                    | 'Exhaust'
+                    | 'Suspension'
+                    | 'Brakes'
+                    | 'Interior'
+                    | 'Exterior'
+                    | 'Electronics'
+                    | 'Wheels/Tires'
+                    | 'Forced Induction'
+                    | 'Fuel System'
+                  )
+                | null;
+              description?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        photos?: (number | null) | Media;
+        notes?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "photo-bar_select".
+ */
+export interface PhotoBarSelect<T extends boolean = true> {
+  images?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brands_select".
+ */
+export interface BrandsSelect<T extends boolean = true> {
+  brands?:
+    | T
+    | {
+        make?: T;
+        photos?: T;
+        notes?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery_select".
+ */
+export interface GallerySelect<T extends boolean = true> {
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "vehicles_select".
+ */
+export interface VehiclesSelect<T extends boolean = true> {
+  vehicles?:
+    | T
+    | {
+        make?: T;
+        model?: T;
+        year?: T;
+        engineType?: T;
+        transmission?: T;
+        drivetrain?: T;
+        modifications?:
+          | T
+          | {
+              type?: T;
+              description?: T;
+              id?: T;
+            };
+        photos?: T;
+        notes?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
