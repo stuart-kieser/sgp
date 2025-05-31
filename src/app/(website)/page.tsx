@@ -7,6 +7,8 @@ import { PhotoBarGlobal } from '@/globals/PhotoBarGlobal'
 import { BrandGlobal } from '@/globals/BrandGlobal'
 import Brands from '@/components/brands'
 
+export const dynamic = 'force-dynamic'
+
 async function getPhotoBar(): Promise<PhotoBarGlobal> {
   const res = await fetch(`${process.env.PAYLOAD_PUBLIC_API_URL}/api/globals/photo-bar`, {
     next: { revalidate: 360 },

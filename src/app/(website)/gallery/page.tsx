@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import { GalleryGlobal } from '@/globals/GalleryGlobal'
 
+export const dynamic = 'force-dynamic'
+
 async function getGallery(): Promise<GalleryGlobal> {
   const res = await fetch(`${process.env.PAYLOAD_PUBLIC_API_URL}/api/globals/gallery`, {
     next: { revalidate: 360 },

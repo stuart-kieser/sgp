@@ -1,6 +1,8 @@
 import CarCard from '@/components/CarCard'
 import { VehiclesGlobal } from '@/globals/VehilcesGlobal'
 
+export const dynamic = 'force-dynamic'
+
 async function getVehicles(): Promise<VehiclesGlobal> {
   const res = await fetch(`${process.env.PAYLOAD_PUBLIC_API_URL}/api/globals/vehicles`, {
     next: { revalidate: 360 },
