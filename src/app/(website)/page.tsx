@@ -9,25 +9,26 @@ import Brands from '@/components/brands'
 
 export const dynamic = 'force-dynamic'
 
-async function getPhotoBar(): Promise<PhotoBarGlobal> {
-  const res = await fetch(`${process.env.PAYLOAD_PUBLIC_API_URL}/api/globals/photo-bar`, {
-    next: { revalidate: 360 },
-  })
-
-  if (!res.ok) throw new Error('Failed to fetch PhotoBar')
-  return res.json()
-}
-
-async function getBrands(): Promise<BrandGlobal> {
-  const res = await fetch(`${process.env.PAYLOAD_PUBLIC_API_URL}/api/globals/brands`, {
-    next: { revalidate: 360 },
-  })
-
-  if (!res.ok) throw new Error('Failed to fetch Brands')
-  return res.json()
-}
-
 export default async function Home() {
+  async function getPhotoBar(): Promise<PhotoBarGlobal> {
+    const res = await fetch(`${process.env.PAYLOAD_PUBLIC_API_URL}/api/globals/photo-bar`, {
+      cache: 'no-store',
+      next: { revalidate: 0 },
+    })
+
+    if (!res.ok) throw new Error('Failed to fetch PhotoBar')
+    return res.json()
+  }
+
+  async function getBrands(): Promise<BrandGlobal> {
+    const res = await fetch(`${process.env.PAYLOAD_PUBLIC_API_URL}/api/globals/brands`, {
+      cache: 'no-store',
+      next: { revalidate: 0 },
+    })
+
+    if (!res.ok) throw new Error('Failed to fetch Brands')
+    return res.json()
+  }
   let gallery: PhotoBarGlobal = { images: [] } // fallback structure
   let brands: BrandGlobal = { brands: [] } // fallback structure
   try {

@@ -2,7 +2,7 @@ import { withPayload } from '@payloadcms/next/withPayload'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // output: 'standalone',
+  output: 'standalone',
   webpack: (config, { webpack }) => {
     config.plugins.push(
       new webpack.IgnorePlugin({

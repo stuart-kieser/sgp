@@ -3,16 +3,16 @@ import { GalleryGlobal } from '@/globals/GalleryGlobal'
 
 export const dynamic = 'force-dynamic'
 
-async function getGallery(): Promise<GalleryGlobal> {
-  const res = await fetch(`${process.env.PAYLOAD_PUBLIC_API_URL}/api/globals/gallery`, {
-    next: { revalidate: 360 },
-  })
-
-  if (!res.ok) throw new Error('Failed to fetch Gallery')
-  return res.json()
-}
-
 export default async function Gallery() {
+  async function getGallery(): Promise<GalleryGlobal> {
+    const res = await fetch(`${process.env.PAYLOAD_PUBLIC_API_URL}/api/globals/gallery`, {
+      cache: 'no-store',
+      next: { revalidate: 0 },
+    })
+
+    if (!res.ok) throw new Error('Failed to fetch Gallery')
+    return res.json()
+  }
   let gallery: GalleryGlobal = { images: [] } // fallback structure
   try {
     gallery = await getGallery()

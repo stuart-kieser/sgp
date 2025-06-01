@@ -3,15 +3,17 @@ import { VehiclesGlobal } from '@/globals/VehilcesGlobal'
 
 export const dynamic = 'force-dynamic'
 
-async function getVehicles(): Promise<VehiclesGlobal> {
-  const res = await fetch(`${process.env.PAYLOAD_PUBLIC_API_URL}/api/globals/vehicles`, {
-    next: { revalidate: 360 },
-  })
-
-  if (!res.ok) throw new Error('Failed to fetch Vehicles')
-  return res.json()
-}
 export default async function Vehicles() {
+  async function getVehicles(): Promise<VehiclesGlobal> {
+    const res = await fetch(`${process.env.PAYLOAD_PUBLIC_API_URL}/api/globals/vehicles`, {
+      cache: 'no-store',
+      next: { revalidate: 0 },
+    })
+
+    if (!res.ok) throw new Error('Failed to fetch Vehicles')
+    return res.json()
+  }
+
   let vehicles: VehiclesGlobal = {
     vehicles: [],
   }

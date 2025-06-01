@@ -2,6 +2,8 @@ import { Carousel, CarouselContent, CarouselPrevious, CarouselNext } from '@/com
 import { PhotoBarGlobal } from '@/globals/PhotoBarGlobal'
 import Image from 'next/image'
 
+export const dynamic = 'force-dynamic'
+
 interface PhotoBarProps {
   gallery: PhotoBarGlobal
 }
