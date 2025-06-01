@@ -13,9 +13,11 @@ WORKDIR /app
 RUN corepack enable
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-# ❌ REMOVE build from here:
-# RUN pnpm run build
+# Copy application source and dependencies
+# Copy Payload CMS media files
+# COPY --from=builder /app/media ./media
+# COPY --from=builder --chown=nextjs:nodejs /app/.next/public ./public
+RUN pnpm build
 
 FROM base AS runner
 WORKDIR /app
@@ -32,13 +34,9 @@ RUN addgroup --system --gid 1001 nodejs \
  && mkdir -p /app/.next \
  && chown -R nextjs:nodejs /app
 
-# Copy application source and dependencies
 COPY --from=deps --chown=nextjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nextjs:nodejs /app ./
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-# Copy Payload CMS media files
-# COPY --from=builder /app/media ./media
-# COPY --from=builder --chown=nextjs:nodejs /app/.next/public ./public
 
 # Use unprivileged user
 USER nextjs
@@ -46,4 +44,4 @@ USER nextjs
 EXPOSE 3000
 
 # Run time build (when Postgres is available), then start app
-CMD ["sh", "-c", "pnpm build && pnpm start"]
+CMD ["sh", "-c", "pnpm start"]

@@ -3,7 +3,7 @@ services: # Postgres Database Service
   payload:
     build:
       context: .
-      dockerfile: Dockerfile.try
+      dockerfile: Dockerfile.reddit
       extra_hosts:
         - 'host.docker.internal:host-gateway'
     extra_hosts:

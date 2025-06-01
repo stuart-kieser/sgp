@@ -24,6 +24,9 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
+  cors: {
+    origins: ['http://localhost:3000'],
+  },
   collections: [Users, Media, Brands],
   globals: [PhotoBarGlobalConf, BrandsConf, GalleryGlobalConf, VehiclesGlobalConf],
   editor: lexicalEditor(),
