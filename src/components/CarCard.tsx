@@ -34,16 +34,11 @@ const CarCard = ({ car }: any) => {
 
         <div className="mt-4">
           {car.notes ? (
-            <p className="text-sm text-gray-600 italic">Note: {car.notes}</p>
+            <p className="text-sm text-gray-600 italic">{car.notes}</p>
           ) : (
             <p className="text-xs text-gray-400">No notes added.</p>
           )}
         </div>
-
-        <p className="text-[10px] text-gray-300 mt-4">
-          Added: {new Date(car.createdAt).toLocaleDateString()} | Updated:{' '}
-          {new Date(car.updatedAt).toLocaleDateString()}
-        </p>
       </div>
     </div>
   )

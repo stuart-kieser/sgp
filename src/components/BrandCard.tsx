@@ -14,7 +14,7 @@ const BrandCard = ({ brand }: any) => {
       <h3 className="text-xl font-semibold text-accent">{brand.make}</h3>
       <div>
         {brand.notes ? (
-          <p className="text-sm text-gray-700 italic">Note: {brand.notes}</p>
+          <p className="text-sm text-gray-700 italic">{brand.notes}</p>
         ) : (
           <p className="text-xs text-gray-400"></p>
         )}

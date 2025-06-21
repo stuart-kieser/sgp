@@ -69,7 +69,6 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
-    brand: Brand;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -78,7 +77,6 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    brand: BrandSelect<false> | BrandSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -88,7 +86,7 @@ export interface Config {
   };
   globals: {
     'photo-bar': PhotoBar;
-    brands: Brand1;
+    brands: Brand;
     gallery: Gallery;
     vehicles: Vehicle;
   };
@@ -163,18 +161,6 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "brand".
- */
-export interface Brand {
-  id: number;
-  make: string;
-  photos?: (number | null) | Media;
-  notes?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -187,10 +173,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
-      } | null)
-    | ({
-        relationTo: 'brand';
-        value: number | Brand;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -269,17 +251,6 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "brand_select".
- */
-export interface BrandSelect<T extends boolean = true> {
-  make?: T;
-  photos?: T;
-  notes?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
@@ -330,7 +301,7 @@ export interface PhotoBar {
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "brands".
  */
-export interface Brand1 {
+export interface Brand {
   id: number;
   brands?:
     | {

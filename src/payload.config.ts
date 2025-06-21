@@ -9,7 +9,6 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-import { Brands } from './collections/Brands'
 import PhotoBarGlobalConf from './globals/PhotoBarGlobal'
 import BrandsConf from './globals/BrandGlobal'
 import GalleryGlobalConf from './globals/GalleryGlobal'
@@ -27,7 +26,7 @@ export default buildConfig({
   cors: {
     origins: ['http://localhost:3000'],
   },
-  collections: [Users, Media, Brands],
+  collections: [Users, Media],
   globals: [PhotoBarGlobalConf, BrandsConf, GalleryGlobalConf, VehiclesGlobalConf],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -36,7 +35,7 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URI || '',
+      connectionString: process.env.PAYLOAD_PUBLIC_DATABASE_URI || '',
     },
   }),
   sharp,
