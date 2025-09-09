@@ -12,7 +12,7 @@ import { Media } from './collections/Media'
 import PhotoBarGlobalConf from './globals/PhotoBarGlobal'
 import BrandsConf from './globals/BrandGlobal'
 import GalleryGlobalConf from './globals/GalleryGlobal'
-import VehiclesGlobalConf from './globals/VehilcesGlobal'
+import { Vehicles } from './collections/VehilcesGlobal'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -26,8 +26,8 @@ export default buildConfig({
   cors: {
     origins: ['http://localhost:3000'],
   },
-  collections: [Users, Media],
-  globals: [PhotoBarGlobalConf, BrandsConf, GalleryGlobalConf, VehiclesGlobalConf],
+  collections: [Users, Media, Vehicles],
+  globals: [PhotoBarGlobalConf, BrandsConf, GalleryGlobalConf],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
