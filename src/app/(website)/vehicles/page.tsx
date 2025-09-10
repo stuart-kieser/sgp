@@ -1,7 +1,6 @@
 'use server'
 import CarCard from '@/components/CarCard'
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
 
 export default async function Vehicles() {
   async function getVehicles() {
@@ -15,7 +14,14 @@ export default async function Vehicles() {
     return data.docs
   }
 
-  const doc = await getVehicles()
+  let doc
+
+  try {
+    doc = await getVehicles()
+  } catch (e) {
+    console.log(e)
+    doc = []
+  }
 
   return (
     <div className="bg-[#101010] text-white gap-4">
