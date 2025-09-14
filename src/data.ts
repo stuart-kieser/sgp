@@ -1,13 +1,13 @@
 const services = [
   {
     id: 1,
-    value: 'Chip Tuning and ECU Mapping',
+    value: 'Tuning and ECU Mapping',
     myimgs: 'chip-tuning.jpg',
     info: "We optimize your vehicle's ECU for increased power, improved fuel efficiency, and enhanced driving dynamics using industry-leading tuning software.",
   },
   {
     id: 2,
-    value: 'Stainless Steel Exhaust Systems',
+    value: 'Exhaust Systems',
     myimgs: 'swift3.jpg',
     info: 'Our high-quality stainless steel exhausts improve performance, resist corrosion, and deliver a deeper, more aggressive sound.',
   },
@@ -25,13 +25,13 @@ const services = [
   },
   {
     id: 5,
-    value: 'Turbocharger Conversions & Upgrades',
+    value: 'Turbochargers',
     myimgs: 'turbocharger.jpg',
     info: 'We install and upgrade turbochargers for significant power gains, improved throttle response, and optimized efficiency.',
   },
   {
     id: 6,
-    value: 'Supercharger Conversions',
+    value: 'Superchargers',
     myimgs: 'supercharger.jpg',
     info: 'Our supercharger conversions deliver instant power, improved acceleration, and a linear boost for ultimate performance.',
   },

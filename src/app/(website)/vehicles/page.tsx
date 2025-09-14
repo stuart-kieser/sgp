@@ -1,26 +1,26 @@
+'use server'
 import CarCard from '@/components/CarCard'
-import { VehiclesGlobal } from '@/globals/VehilcesGlobal'
-
-export const dynamic = 'force-dynamic'
+import Link from 'next/link'
 
 export default async function Vehicles() {
-  async function getVehicles(): Promise<VehiclesGlobal> {
-    const res = await fetch(`${process.env.PAYLOAD_PUBLIC_API_URL}/api/globals/vehicles`, {
+  async function getVehicles() {
+    const res = await fetch(`${process.env.PAYLOAD_PUBLIC_API_URL}/api/vehicles`, {
       cache: 'no-store',
       next: { revalidate: 0 },
     })
-
+    const data = await res.json()
+    console.log(data.docs)
     if (!res.ok) throw new Error('Failed to fetch Vehicles')
-    return res.json()
+    return data.docs
   }
 
-  let vehicles: VehiclesGlobal = {
-    vehicles: [],
-  }
+  let doc
+
   try {
-    vehicles = await getVehicles()
-  } catch (err) {
-    console.warn('Could not fetch Vehicles data at build time:', err)
+    doc = await getVehicles()
+  } catch (e) {
+    console.log(e)
+    doc = []
   }
 
   return (
@@ -29,9 +29,15 @@ export default async function Vehicles() {
         <p className="font-sabre sm:text-7xl text-4xl">Vehicles</p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-8 p-8">
-        {vehicles.vehicles.map((vehicle: any) => (
-          <CarCard key={vehicle.id} car={vehicle} />
-        ))}
+        {doc ? (
+          doc.map((vehicle: any) => (
+            <Link key={vehicle.id} href={`/vehicles/${vehicle.id}`} className="block">
+              <CarCard key={vehicle.id} car={vehicle} />
+            </Link>
+          ))
+        ) : (
+          <>No Vehicles To Display</>
+        )}
       </div>
     </div>
   )

@@ -99,15 +99,59 @@ export const media = pgTable(
   }),
 )
 
-export const brand = pgTable(
-  'brand',
+export const vehicles_vehicles_modifications = pgTable(
+  'vehicles_vehicles_modifications',
   {
-    id: serial('id').primaryKey(),
-    make: varchar('make').notNull(),
+    _order: integer('_order').notNull(),
+    _parentID: varchar('_parent_id').notNull(),
+    id: varchar('id').primaryKey(),
+    type: enum_vehicles_vehicles_modifications_type('type'),
+    description: varchar('description'),
+  },
+  (columns) => ({
+    _orderIdx: index('vehicles_vehicles_modifications_order_idx').on(columns._order),
+    _parentIDIdx: index('vehicles_vehicles_modifications_parent_id_idx').on(columns._parentID),
+    _parentIDFk: foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [vehicles_vehicles.id],
+      name: 'vehicles_vehicles_modifications_parent_id_fk',
+    }).onDelete('cascade'),
+  }),
+)
+
+export const vehicles_vehicles = pgTable(
+  'vehicles_vehicles',
+  {
+    _order: integer('_order').notNull(),
+    _parentID: integer('_parent_id').notNull(),
+    id: varchar('id').primaryKey(),
+    make: varchar('make'),
+    model: varchar('model'),
+    year: numeric('year'),
+    engineType: varchar('engine_type'),
+    transmission: varchar('transmission'),
+    drivetrain: enum_vehicles_vehicles_drivetrain('drivetrain'),
     photos: integer('photos_id').references(() => media.id, {
       onDelete: 'set null',
     }),
     notes: varchar('notes'),
+  },
+  (columns) => ({
+    _orderIdx: index('vehicles_vehicles_order_idx').on(columns._order),
+    _parentIDIdx: index('vehicles_vehicles_parent_id_idx').on(columns._parentID),
+    vehicles_vehicles_photos_idx: index('vehicles_vehicles_photos_idx').on(columns.photos),
+    _parentIDFk: foreignKey({
+      columns: [columns['_parentID']],
+      foreignColumns: [vehicles.id],
+      name: 'vehicles_vehicles_parent_id_fk',
+    }).onDelete('cascade'),
+  }),
+)
+
+export const vehicles = pgTable(
+  'vehicles',
+  {
+    id: serial('id').primaryKey(),
     updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
       .defaultNow()
       .notNull(),
@@ -116,9 +160,8 @@ export const brand = pgTable(
       .notNull(),
   },
   (columns) => ({
-    brand_photos_idx: index('brand_photos_idx').on(columns.photos),
-    brand_updated_at_idx: index('brand_updated_at_idx').on(columns.updatedAt),
-    brand_created_at_idx: index('brand_created_at_idx').on(columns.createdAt),
+    vehicles_updated_at_idx: index('vehicles_updated_at_idx').on(columns.updatedAt),
+    vehicles_created_at_idx: index('vehicles_created_at_idx').on(columns.createdAt),
   }),
 )
 
@@ -156,7 +199,7 @@ export const payload_locked_documents_rels = pgTable(
     path: varchar('path').notNull(),
     usersID: integer('users_id'),
     mediaID: integer('media_id'),
-    brandID: integer('brand_id'),
+    vehiclesID: integer('vehicles_id'),
   },
   (columns) => ({
     order: index('payload_locked_documents_rels_order_idx').on(columns.order),
@@ -168,9 +211,9 @@ export const payload_locked_documents_rels = pgTable(
     payload_locked_documents_rels_media_id_idx: index(
       'payload_locked_documents_rels_media_id_idx',
     ).on(columns.mediaID),
-    payload_locked_documents_rels_brand_id_idx: index(
-      'payload_locked_documents_rels_brand_id_idx',
-    ).on(columns.brandID),
+    payload_locked_documents_rels_vehicles_id_idx: index(
+      'payload_locked_documents_rels_vehicles_id_idx',
+    ).on(columns.vehiclesID),
     parentFk: foreignKey({
       columns: [columns['parent']],
       foreignColumns: [payload_locked_documents.id],
@@ -186,10 +229,10 @@ export const payload_locked_documents_rels = pgTable(
       foreignColumns: [media.id],
       name: 'payload_locked_documents_rels_media_fk',
     }).onDelete('cascade'),
-    brandIdFk: foreignKey({
-      columns: [columns['brandID']],
-      foreignColumns: [brand.id],
-      name: 'payload_locked_documents_rels_brand_fk',
+    vehiclesIdFk: foreignKey({
+      columns: [columns['vehiclesID']],
+      foreignColumns: [vehicles.id],
+      name: 'payload_locked_documents_rels_vehicles_fk',
     }).onDelete('cascade'),
   }),
 )
@@ -361,68 +404,36 @@ export const gallery = pgTable('gallery', {
   createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 }),
 })
 
-export const vehicles_vehicles_modifications = pgTable(
-  'vehicles_vehicles_modifications',
-  {
-    _order: integer('_order').notNull(),
-    _parentID: varchar('_parent_id').notNull(),
-    id: varchar('id').primaryKey(),
-    type: enum_vehicles_vehicles_modifications_type('type'),
-    description: varchar('description'),
-  },
-  (columns) => ({
-    _orderIdx: index('vehicles_vehicles_modifications_order_idx').on(columns._order),
-    _parentIDIdx: index('vehicles_vehicles_modifications_parent_id_idx').on(columns._parentID),
-    _parentIDFk: foreignKey({
-      columns: [columns['_parentID']],
-      foreignColumns: [vehicles_vehicles.id],
-      name: 'vehicles_vehicles_modifications_parent_id_fk',
-    }).onDelete('cascade'),
-  }),
-)
-
-export const vehicles_vehicles = pgTable(
-  'vehicles_vehicles',
-  {
-    _order: integer('_order').notNull(),
-    _parentID: integer('_parent_id').notNull(),
-    id: varchar('id').primaryKey(),
-    make: varchar('make'),
-    model: varchar('model'),
-    year: numeric('year'),
-    engineType: varchar('engine_type'),
-    transmission: varchar('transmission'),
-    drivetrain: enum_vehicles_vehicles_drivetrain('drivetrain'),
-    photos: integer('photos_id').references(() => media.id, {
-      onDelete: 'set null',
-    }),
-    notes: varchar('notes'),
-  },
-  (columns) => ({
-    _orderIdx: index('vehicles_vehicles_order_idx').on(columns._order),
-    _parentIDIdx: index('vehicles_vehicles_parent_id_idx').on(columns._parentID),
-    vehicles_vehicles_photos_idx: index('vehicles_vehicles_photos_idx').on(columns.photos),
-    _parentIDFk: foreignKey({
-      columns: [columns['_parentID']],
-      foreignColumns: [vehicles.id],
-      name: 'vehicles_vehicles_parent_id_fk',
-    }).onDelete('cascade'),
-  }),
-)
-
-export const vehicles = pgTable('vehicles', {
-  id: serial('id').primaryKey(),
-  updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 }),
-  createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 }),
-})
-
 export const relations_users = relations(users, () => ({}))
 export const relations_media = relations(media, () => ({}))
-export const relations_brand = relations(brand, ({ one }) => ({
+export const relations_vehicles_vehicles_modifications = relations(
+  vehicles_vehicles_modifications,
+  ({ one }) => ({
+    _parentID: one(vehicles_vehicles, {
+      fields: [vehicles_vehicles_modifications._parentID],
+      references: [vehicles_vehicles.id],
+      relationName: 'modifications',
+    }),
+  }),
+)
+export const relations_vehicles_vehicles = relations(vehicles_vehicles, ({ one, many }) => ({
+  _parentID: one(vehicles, {
+    fields: [vehicles_vehicles._parentID],
+    references: [vehicles.id],
+    relationName: 'vehicles',
+  }),
+  modifications: many(vehicles_vehicles_modifications, {
+    relationName: 'modifications',
+  }),
   photos: one(media, {
-    fields: [brand.photos],
+    fields: [vehicles_vehicles.photos],
     references: [media.id],
     relationName: 'photos',
+  }),
+}))
+export const relations_vehicles = relations(vehicles, ({ many }) => ({
+  vehicles: many(vehicles_vehicles, {
+    relationName: 'vehicles',
   }),
 }))
 export const relations_payload_locked_documents_rels = relations(
@@ -443,10 +454,10 @@ export const relations_payload_locked_documents_rels = relations(
       references: [media.id],
       relationName: 'media',
     }),
-    brandID: one(brand, {
-      fields: [payload_locked_documents_rels.brandID],
-      references: [brand.id],
-      relationName: 'brand',
+    vehiclesID: one(vehicles, {
+      fields: [payload_locked_documents_rels.vehiclesID],
+      references: [vehicles.id],
+      relationName: 'vehicles',
     }),
   }),
 )
@@ -530,43 +541,15 @@ export const relations_gallery = relations(gallery, ({ many }) => ({
     relationName: 'images',
   }),
 }))
-export const relations_vehicles_vehicles_modifications = relations(
-  vehicles_vehicles_modifications,
-  ({ one }) => ({
-    _parentID: one(vehicles_vehicles, {
-      fields: [vehicles_vehicles_modifications._parentID],
-      references: [vehicles_vehicles.id],
-      relationName: 'modifications',
-    }),
-  }),
-)
-export const relations_vehicles_vehicles = relations(vehicles_vehicles, ({ one, many }) => ({
-  _parentID: one(vehicles, {
-    fields: [vehicles_vehicles._parentID],
-    references: [vehicles.id],
-    relationName: 'vehicles',
-  }),
-  modifications: many(vehicles_vehicles_modifications, {
-    relationName: 'modifications',
-  }),
-  photos: one(media, {
-    fields: [vehicles_vehicles.photos],
-    references: [media.id],
-    relationName: 'photos',
-  }),
-}))
-export const relations_vehicles = relations(vehicles, ({ many }) => ({
-  vehicles: many(vehicles_vehicles, {
-    relationName: 'vehicles',
-  }),
-}))
 
 type DatabaseSchema = {
   enum_vehicles_vehicles_modifications_type: typeof enum_vehicles_vehicles_modifications_type
   enum_vehicles_vehicles_drivetrain: typeof enum_vehicles_vehicles_drivetrain
   users: typeof users
   media: typeof media
-  brand: typeof brand
+  vehicles_vehicles_modifications: typeof vehicles_vehicles_modifications
+  vehicles_vehicles: typeof vehicles_vehicles
+  vehicles: typeof vehicles
   payload_locked_documents: typeof payload_locked_documents
   payload_locked_documents_rels: typeof payload_locked_documents_rels
   payload_preferences: typeof payload_preferences
@@ -578,12 +561,11 @@ type DatabaseSchema = {
   brands: typeof brands
   gallery_images: typeof gallery_images
   gallery: typeof gallery
-  vehicles_vehicles_modifications: typeof vehicles_vehicles_modifications
-  vehicles_vehicles: typeof vehicles_vehicles
-  vehicles: typeof vehicles
   relations_users: typeof relations_users
   relations_media: typeof relations_media
-  relations_brand: typeof relations_brand
+  relations_vehicles_vehicles_modifications: typeof relations_vehicles_vehicles_modifications
+  relations_vehicles_vehicles: typeof relations_vehicles_vehicles
+  relations_vehicles: typeof relations_vehicles
   relations_payload_locked_documents_rels: typeof relations_payload_locked_documents_rels
   relations_payload_locked_documents: typeof relations_payload_locked_documents
   relations_payload_preferences_rels: typeof relations_payload_preferences_rels
@@ -595,9 +577,6 @@ type DatabaseSchema = {
   relations_brands: typeof relations_brands
   relations_gallery_images: typeof relations_gallery_images
   relations_gallery: typeof relations_gallery
-  relations_vehicles_vehicles_modifications: typeof relations_vehicles_vehicles_modifications
-  relations_vehicles_vehicles: typeof relations_vehicles_vehicles
-  relations_vehicles: typeof relations_vehicles
 }
 
 declare module '@payloadcms/db-postgres/types' {
