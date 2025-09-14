@@ -6,13 +6,17 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
-
+import { seoPlugin } from '@payloadcms/plugin-seo'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import PhotoBarGlobalConf from './globals/PhotoBarGlobal'
 import BrandsConf from './globals/BrandGlobal'
 import GalleryGlobalConf from './globals/GalleryGlobal'
-import { Vehicles } from './collections/VehilcesGlobal'
+import { Vehicles } from './collections/Vehilces'
+import { Intro } from './collections/Intro'
+import { Services } from './collections/Services'
+import { Pages } from './collections/Pages'
+import PageBreaks from './collections/PageBreak'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -26,7 +30,7 @@ export default buildConfig({
   cors: {
     origins: ['http://localhost:3000'],
   },
-  collections: [Users, Media, Vehicles],
+  collections: [Users, Media, Vehicles, Intro, Services, Pages, PageBreaks],
   globals: [PhotoBarGlobalConf, BrandsConf, GalleryGlobalConf],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -41,6 +45,15 @@ export default buildConfig({
   sharp,
   plugins: [
     payloadCloudPlugin(),
+    seoPlugin({
+      collections: ['pages', 'services'],
+      uploadsCollection: 'media',
+      generateTitle: ({ doc }) => `sgpref.co.za — ${doc.title}`,
+      generateDescription: ({ doc }) => doc.info,
+      generateURL: ({ doc, collectionSlug }) =>
+        `https://sgperf.co.za/${collectionSlug}/${doc.slug.trimEnd().replaceAll(' ', '-')}`,
+      tabbedUI: true,
+    }),
     // storage-adapter-placeholder
   ],
 })

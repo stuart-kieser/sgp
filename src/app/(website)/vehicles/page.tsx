@@ -10,7 +10,6 @@ export default async function Vehicles() {
       next: { revalidate: 0 },
     })
     const data = await res.json()
-    console.log(data.docs)
     if (!res.ok) throw new Error('Failed to fetch Vehicles')
     return data.docs
   }

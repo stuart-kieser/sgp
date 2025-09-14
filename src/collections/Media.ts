@@ -13,4 +13,13 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: { staticDir: './media' },
+  hooks: {
+    afterChange: [
+      async () => {
+        await fetch(
+          `${process.env.PAYLOAD_PUBLIC_API_URL}/api/revalidate?secret=${process.env.PAYLOAD_SECRET}&path=/`,
+        )
+      },
+    ],
+  },
 }

@@ -46,9 +46,11 @@ const baseButtonClasses =
 const listItemClasses =
   'group inline-flex h-9 w-full items-center justify-start rounded-md px-4 py-2 font-medium hover:scale-105 active:scale-95 text-xs'
 
-const NavBar: React.FC<{ className?: string }> = ({ className = '' }) => {
+const NavBar: React.FC<{ className?: string; services: any[] }> = ({
+  className = '',
+  services,
+}) => {
   const router = useRouter()
-  const services = React.useMemo(() => data.getServices?.() ?? [], [])
   const [open, setOpen] = React.useState(false)
   const close = React.useCallback(() => setOpen(false), [])
 
@@ -105,13 +107,13 @@ const NavBar: React.FC<{ className?: string }> = ({ className = '' }) => {
                         <Button
                           key={idx}
                           onClick={() => {
-                            router.push(`/services/${String(service.id)}`)
+                            router.push(`/services/${String(service.slug)}`)
                             close()
                           }}
                           className={listItemClasses}
                           variant="ghost"
                         >
-                          {String(service.value)}
+                          {service.title}
                         </Button>
                       ))}
                     </div>
@@ -150,9 +152,9 @@ const NavBar: React.FC<{ className?: string }> = ({ className = '' }) => {
             {services.map((service: any, index: number) => (
               <DropdownMenuItem
                 key={index}
-                onClick={() => router.push(`/services/${String(service.id)}`)}
+                onClick={() => router.push(`/services/${String(service.slug)}`)}
               >
-                {String(service.value)}
+                {String(service.title)}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>

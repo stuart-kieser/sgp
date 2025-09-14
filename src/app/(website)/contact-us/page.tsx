@@ -1,5 +1,5 @@
-import ContactDetails from '@/components/contact-details'
-import Contactform from '@/components/contact-form'
+import ContactDetails from '@/components/ContactDetails'
+import Contactform from '@/components/ContactForm'
 import Image from 'next/image'
 export default function ContactUs() {
   return (
