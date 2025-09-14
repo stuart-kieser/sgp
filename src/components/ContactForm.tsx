@@ -37,6 +37,7 @@ export default function Contactform() {
         <div className="mb-4">
           <label className="block text-accent font-medium mb-2">Name:</label>
           <input
+            title="Name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -46,6 +47,7 @@ export default function Contactform() {
         <div className="mb-4">
           <label className="block text-accent font-medium mb-2">Email:</label>
           <input
+            title="Email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -55,6 +57,7 @@ export default function Contactform() {
         <div className="mb-4">
           <label className="block text-accent font-medium mb-2">Number:</label>
           <input
+            title="phone"
             type="tel"
             value={number}
             onChange={(e) => setNumber(e.target.value)}
@@ -64,6 +67,7 @@ export default function Contactform() {
         <div className="mb-4">
           <label className="block text-accent font-medium mb-2">Ask us:</label>
           <textarea
+            title="Message"
             rows={5}
             value={text}
             onChange={(e) => setText(e.target.value)}

@@ -70,6 +70,10 @@ export interface Config {
     users: User;
     media: Media;
     vehicles: Vehicle;
+    intros: Intro;
+    services: Service;
+    page: Page;
+    'page-breaks': PageBreak;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -79,6 +83,10 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     vehicles: VehiclesSelect<false> | VehiclesSelect<true>;
+    intros: IntrosSelect<false> | IntrosSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
+    page: PageSelect<false> | PageSelect<true>;
+    'page-breaks': PageBreaksSelect<false> | PageBreaksSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -138,6 +146,13 @@ export interface User {
   hash?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
   password?: string | null;
 }
 /**
@@ -198,6 +213,156 @@ export interface Vehicle {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "intros".
+ */
+export interface Intro {
+  id: number;
+  heading: string;
+  para: string;
+  /**
+   * If checked, choose a custom link instead of a page relationship.
+   */
+  isCustomPage?: boolean | null;
+  link?: ('/gallery' | '/services' | '/contact-us' | '/vehicles' | '/') | null;
+  pageLink?: (number | null) | Page;
+  linkText?: string | null;
+  image: number | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page".
+ */
+export interface Page {
+  id: number;
+  name: string;
+  'custom-slug': string;
+  layout?: (ContentBlock | ContentBlockReversed | TextBlock)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentBlock".
+ */
+export interface ContentBlock {
+  contentHeader: string;
+  contentText?: string | null;
+  image?: (number | null) | Media;
+  width?: ('w-1/2' | 'w-1/3' | 'w-full') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'content-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentBlockReversed".
+ */
+export interface ContentBlockReversed {
+  contentHeader: string;
+  contentText?: string | null;
+  image?: (number | null) | Media;
+  width?: ('w-1/2' | 'w-1/3' | 'w-full') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'content-block-reversed';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextBlock".
+ */
+export interface TextBlock {
+  contentHeader: string;
+  contentText: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  width?: ('w-1/2' | 'w-1/3' | 'w-full') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'text-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: number;
+  title: string;
+  slug: string;
+  info: string;
+  layout?: (ContentBlock | ContentBlockReversed | TextBlock | CallToActionBlock)[] | null;
+  image: number | Media;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionBlock".
+ */
+export interface CallToActionBlock {
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page-breaks".
+ */
+export interface PageBreak {
+  id: number;
+  title: string;
+  /**
+   * Multiline text. Newlines are respected. Keep the copy short.
+   */
+  text: string;
+  hasLink?: boolean | null;
+  button_text?: string | null;
+  /**
+   * Select a Custom Link doc to use for the button target
+   */
+  link?: (number | null) | Page;
+  background: number | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -214,6 +379,22 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'vehicles';
         value: number | Vehicle;
+      } | null)
+    | ({
+        relationTo: 'intros';
+        value: number | Intro;
+      } | null)
+    | ({
+        relationTo: 'services';
+        value: number | Service;
+      } | null)
+    | ({
+        relationTo: 'page';
+        value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'page-breaks';
+        value: number | PageBreak;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -271,6 +452,13 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -310,6 +498,123 @@ export interface VehiclesSelect<T extends boolean = true> {
       };
   photos?: T;
   notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "intros_select".
+ */
+export interface IntrosSelect<T extends boolean = true> {
+  heading?: T;
+  para?: T;
+  isCustomPage?: T;
+  link?: T;
+  pageLink?: T;
+  linkText?: T;
+  image?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  info?: T;
+  layout?:
+    | T
+    | {
+        'content-block'?: T | ContentBlockSelect<T>;
+        'content-block-reversed'?: T | ContentBlockReversedSelect<T>;
+        'text-block'?: T | TextBlockSelect<T>;
+        cta?: T | CallToActionBlockSelect<T>;
+      };
+  image?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentBlock_select".
+ */
+export interface ContentBlockSelect<T extends boolean = true> {
+  contentHeader?: T;
+  contentText?: T;
+  image?: T;
+  width?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentBlockReversed_select".
+ */
+export interface ContentBlockReversedSelect<T extends boolean = true> {
+  contentHeader?: T;
+  contentText?: T;
+  image?: T;
+  width?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextBlock_select".
+ */
+export interface TextBlockSelect<T extends boolean = true> {
+  contentHeader?: T;
+  contentText?: T;
+  width?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionBlock_select".
+ */
+export interface CallToActionBlockSelect<T extends boolean = true> {
+  richText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page_select".
+ */
+export interface PageSelect<T extends boolean = true> {
+  name?: T;
+  'custom-slug'?: T;
+  layout?:
+    | T
+    | {
+        'content-block'?: T | ContentBlockSelect<T>;
+        'content-block-reversed'?: T | ContentBlockReversedSelect<T>;
+        'text-block'?: T | TextBlockSelect<T>;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page-breaks_select".
+ */
+export interface PageBreaksSelect<T extends boolean = true> {
+  title?: T;
+  text?: T;
+  hasLink?: T;
+  button_text?: T;
+  link?: T;
+  background?: T;
   updatedAt?: T;
   createdAt?: T;
 }

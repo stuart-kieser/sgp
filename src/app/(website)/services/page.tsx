@@ -1,8 +1,28 @@
 import getServices from '@/data'
 import Image from 'next/image'
+import { getPayload } from 'payload'
+import config from '@payload-config'
+import { toAbsolute } from '@/lib/utils'
+import Link from 'next/link'
 
 export default async function ServicesPage() {
-  const services = await getServices.getServices()
+  const payload = await getPayload({ config })
+
+  async function getServices() {
+    const result = await payload.find({
+      collection: 'services', // required
+      sort: '-createdAt',
+    })
+    return result.docs.reverse()
+  }
+  let services: any = { intro: [] }
+
+  try {
+    services = await getServices()
+  } catch (err) {
+    console.warn('Could not fetch PhotoBar data at build time:', err)
+  }
+
   return (
     <div className="bg-[#101010] text-white">
       <div
@@ -16,7 +36,7 @@ export default async function ServicesPage() {
           <div className="flex border-b-4 border-orange-600 flex-col sm:flex-row" key={index}>
             <div className="h-[550px] w-full flex flex-col justify-center items-center  p-10">
               <Image
-                src={`/images/${service?.myimgs}`}
+                src={toAbsolute(service.image.url)}
                 alt="Background Image"
                 className="object-cover h-full w-full rounded-lg"
                 width={1300}
@@ -25,10 +45,16 @@ export default async function ServicesPage() {
             </div>
             <div className="flex flex-col lg:flex-row p-8 w-full items-center">
               <div className="w-full flex flex-col align-center my-12 text-center">
-                <h2 className="text-3xl pb-8">{service ? service.value : ''}</h2>
+                <h2 className="text-3xl pb-8">{service ? service.title : ''}</h2>
                 <p className="px-2 lg:px-28 text-center text-xl">
                   {service ? service.info : 'Error, Service Not Found.'}
                 </p>
+                <Link
+                  href={`/services/${service.slug}`}
+                  className="underline hover:text-orange-500"
+                >
+                  Read More
+                </Link>
               </div>
             </div>
           </div>
