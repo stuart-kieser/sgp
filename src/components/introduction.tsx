@@ -42,8 +42,9 @@ export default function Introduction({ intro, intervalMs = 4000 }: IntroProps) {
   const [positionX, setPositionX] = useState(0)
 
   const slides = useMemo(() => {
+    if (!intro) return
     const base = (process.env.NEXT_PUBLIC_PAYLOAD_URL || '').replace(/\/$/, '')
-    return (intro || []).map((item) => {
+    return (intro || [])?.map((item) => {
       // Prefer `url` (API path or absolute); fallback to /media/filename if you serve it statically
       let src = ''
       if (item.image.url) {
@@ -57,11 +58,12 @@ export default function Introduction({ intro, intervalMs = 4000 }: IntroProps) {
     })
   }, [intro])
 
-  const count = slides.length
+  const count = slides!.length!
   const slideWidthPct = count > 0 ? 100 / count : 100
 
   // Auto-advance; keep in sync with `count` and `intervalMs`
   useEffect(() => {
+
     if (count <= 1) return
     const id = setInterval(() => {
       setPositionX((prev) => (prev + 1) % count)
@@ -84,7 +86,7 @@ export default function Introduction({ intro, intervalMs = 4000 }: IntroProps) {
           transition: 'transform 0.7s ease-in-out',
         }}
       >
-        {slides.map((vec) => (
+        {slides?.map((vec) => (
           <section
             key={vec.id}
             style={{

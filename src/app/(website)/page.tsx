@@ -1,14 +1,14 @@
-import Introduction from '@/components/Introduction'
 import OurStory from '@/components/OurStory'
-import PhotoBar from '@/components/Photobar'
-import Service from '@/components/Services'
 import ContactUs from './contact-us/page'
 import { PhotoBarGlobal } from '@/globals/PhotoBarGlobal'
 import { BrandGlobal } from '@/globals/BrandGlobal'
-import Brands from '@/components/Brands'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import PageBreak from '@/components/PageBreak'
+import Introduction from '@/components/introduction'
+import Service from '@/components/Services'
+import Brands from '@/components/brands'
+import PhotoBar from '@/components/Photobar'
 
 export default async function Home() {
   const payload = await getPayload({ config })
@@ -47,6 +47,7 @@ export default async function Home() {
       collection: 'services', // required
       sort: '-createdAt',
     })
+    console.log(result)
     return result.docs.reverse()
   }
 
@@ -64,8 +65,8 @@ export default async function Home() {
 
   let gallery: PhotoBarGlobal = { images: [] } // fallback structure
   let brands: BrandGlobal = { brands: [] } // fallback structure
-  let intro: any = { intro: [] }
-  let services: any = { intro: [] }
+  let intro: any[] = []
+  let services: any[] = []
   let page_break: any
 
   try {
@@ -80,7 +81,11 @@ export default async function Home() {
 
   return (
     <div>
-      <Introduction intro={intro} />
+      {
+        intro.length > 1 ?
+          <Introduction intro={intro} />
+          : null
+      }
       <Service services={services} />
       <PageBreak doc={page_break} />
       <Brands brands={brands} />
