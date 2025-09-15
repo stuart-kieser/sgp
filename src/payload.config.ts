@@ -46,7 +46,7 @@ export default buildConfig({
   plugins: [
     payloadCloudPlugin(),
     seoPlugin({
-      collections: ['pages', 'services'],
+      collections: ['page', 'services'],
       uploadsCollection: 'media',
       generateTitle: ({ doc }) => `sgpref.co.za — ${doc.title}`,
       generateDescription: ({ doc }) => doc.info,
