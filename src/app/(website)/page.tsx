@@ -7,7 +7,7 @@ import config from '@payload-config'
 import PageBreak from '@/components/PageBreak'
 import Introduction from '@/components/introduction'
 import Service from '@/components/Services'
-import Brands from '@/components/brands'
+import Brands from '@/components/Brands'
 import PhotoBar from '@/components/Photobar'
 
 export default async function Home() {
@@ -81,11 +81,7 @@ export default async function Home() {
 
   return (
     <div>
-      {
-        intro.length > 1 ?
-          <Introduction intro={intro} />
-          : null
-      }
+      {intro.length > 0 ? <Introduction intro={intro} /> : null}
       <Service services={services} />
       <PageBreak doc={page_break} />
       <Brands brands={brands} />
