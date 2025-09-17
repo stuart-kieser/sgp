@@ -59,7 +59,7 @@ export async function generateMetadata({
   params: { slug: string }
 }): Promise<Metadata> {
   const { slug } = await params
-  const svc: ServiceDoc = await getServiceBySlug(slug)
+  const svc: ServiceDoc = (await getServiceBySlug(slug)) as ServiceDoc
   if (!svc) return { title: 'Service not found — SGP Ref' }
 
   const m = svc.meta ?? {}
@@ -108,7 +108,7 @@ export async function generateMetadata({
 
 export default async function ServicePage({ params }: { params: { slug: string } }) {
   const { slug } = await params
-  const service: ServiceDoc = await getServiceBySlug(slug)
+  const service: ServiceDoc = (await getServiceBySlug(slug)) as ServiceDoc
   if (!service) return notFound()
   console.log(service.image.url)
 

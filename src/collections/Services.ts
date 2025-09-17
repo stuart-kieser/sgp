@@ -52,7 +52,9 @@ export const Services: CollectionConfig = {
       required: true,
     },
   ],
-
+  upload: {
+    staticDir: './media',
+  },
   hooks: {
     afterChange: [
       async ({ doc }) => {
