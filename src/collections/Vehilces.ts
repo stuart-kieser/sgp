@@ -9,23 +9,28 @@ export const Vehicles: CollectionConfig = {
     {
       name: 'make',
       type: 'text',
+      required: true,
     },
     {
       name: 'model',
       type: 'text',
+      required: true,
     },
     {
       name: 'year',
       type: 'number',
+      required: true,
     },
     {
       name: 'engineType',
       type: 'text',
       label: 'Engine Type',
+      required: true,
     },
     {
       name: 'transmission',
       type: 'text',
+      required: true,
     },
     {
       name: 'drivetrain',
@@ -36,6 +41,7 @@ export const Vehicles: CollectionConfig = {
         { label: 'AWD', value: 'awd' },
         { label: '4WD', value: '4wd' },
       ],
+      required: true,
     },
     {
       name: 'modifications',
@@ -63,17 +69,20 @@ export const Vehicles: CollectionConfig = {
           type: 'textarea',
         },
       ],
+      required: true,
     },
     {
       name: 'photos',
       type: 'upload',
       relationTo: 'media',
       label: 'Photos',
+      required: true,
     },
     {
       name: 'notes',
       type: 'textarea',
       label: 'Build Notes',
+      required: true,
     },
   ],
   hooks: {
