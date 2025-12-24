@@ -131,8 +131,8 @@ const NavBar: React.FC<{ className?: string; services: any[] }> = ({
       <div className="hidden lg:flex items-center justify-end gap-2 relative z-50 font-sabre">
         {/* Primary links */}
         {routes.map((r) => (
-          <Link href={r.href} key={r.href} legacyBehavior>
-            <a className={baseButtonClasses}>{r.label}</a>
+          <Link href={r.href} key={r.href}>
+            <div className={baseButtonClasses}>{r.label}</div>
           </Link>
         ))}
 

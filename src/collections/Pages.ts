@@ -1,6 +1,7 @@
 import { CallToAction } from '@/blocks/call_to_action'
 import { ContentBlock } from '@/blocks/content_block'
 import { ContentBlockReversed } from '@/blocks/content_block_reversed'
+import { MediaBlock } from '@/blocks/media_block'
 import { TextBlock } from '@/blocks/text_block'
 import { CollectionConfig } from 'payload'
 
@@ -10,10 +11,10 @@ export const Pages: CollectionConfig = {
     read: () => true,
   },
   admin: {
-    useAsTitle: 'name',
+    useAsTitle: 'title',
   },
   fields: [
-    { name: 'name', type: 'text', required: true },
+    { name: 'title', type: 'text', required: true },
     {
       name: 'custom-slug',
       type: 'text',
@@ -34,6 +35,12 @@ export const Pages: CollectionConfig = {
       },
     },
     {
+      name: 'info',
+      type: 'textarea',
+      required: true,
+      maxLength: 60,
+    },
+    {
       name: 'layout', // required
       type: 'blocks', // required
       minRows: 1,
@@ -43,6 +50,7 @@ export const Pages: CollectionConfig = {
         ContentBlock,
         ContentBlockReversed,
         TextBlock,
+        MediaBlock,
         // CallToAction,
       ],
     },

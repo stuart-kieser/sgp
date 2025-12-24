@@ -10,7 +10,7 @@ import { toAbsolute } from '@/lib/utils'
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-const SITE_URL = 'https://sgpref.co.za'
+const SITE_URL = process.env.PAYLOAD_PUBLIC_SITE_URL
 
 async function getCustomPageBySlug(slug: string) {
   try {
@@ -34,7 +34,7 @@ export async function generateMetadata({
 }: {
   params: { cslug: string }
 }): Promise<Metadata> {
-  const { cslug } = params
+  const { cslug } = await params
   const doc = await getCustomPageBySlug(cslug)
 
   if (!doc) {
@@ -47,7 +47,7 @@ export async function generateMetadata({
 
   const m: any = (doc as any).meta ?? {}
   const baseTitle = 'SGP Ref'
-  const titleCore = (m.title || doc.name || 'Page').trim()
+  const titleCore = (m.title || doc.title || 'Page').trim()
   const title = `${titleCore} — ${baseTitle}`
   const description =
     (m.description || (doc as any).description || '').toString().trim() || undefined
@@ -102,8 +102,9 @@ export async function generateMetadata({
 
 // ---- Page ----
 export default async function CustomPage({ params }: { params: { cslug: string } }) {
-  const { cslug } = params
+  const { cslug } = await params
   const matchedPage = await getCustomPageBySlug(cslug)
+  console.log(matchedPage)
 
   if (!matchedPage) {
     // fallback if no match
@@ -113,9 +114,6 @@ export default async function CustomPage({ params }: { params: { cslug: string }
   // if match found, render the block or custom component
   return (
     <div className="bg-[#101010] p-10">
-      <h1 className="text-white font-sabre text-2xl md:text-4xl mb-5 md:md-10">
-        {matchedPage.name}
-      </h1>
       <div className="flex flex-col">{matchedPage.layout?.map((block) => renderBlocks(block))}</div>
     </div>
   )

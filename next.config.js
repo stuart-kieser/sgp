@@ -11,6 +11,11 @@ const nextConfig = {
     )
     return config
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '6mb',
+    },
+  },
 }
 
 export default withPayload(nextConfig, {

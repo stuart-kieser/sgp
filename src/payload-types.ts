@@ -74,6 +74,7 @@ export interface Config {
     services: Service;
     page: Page;
     'page-breaks': PageBreak;
+    'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -87,6 +88,7 @@ export interface Config {
     services: ServicesSelect<false> | ServicesSelect<true>;
     page: PageSelect<false> | PageSelect<true>;
     'page-breaks': PageBreaksSelect<false> | PageBreaksSelect<true>;
+    'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -94,6 +96,7 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
+  fallbackLocale: null;
   globals: {
     'photo-bar': PhotoBar;
     brands: Brand;
@@ -180,34 +183,32 @@ export interface Media {
  */
 export interface Vehicle {
   id: number;
-  make?: string | null;
-  model?: string | null;
-  year?: number | null;
-  engineType?: string | null;
-  transmission?: string | null;
-  drivetrain?: ('fwd' | 'rwd' | 'awd' | '4wd') | null;
-  modifications?:
-    | {
-        type?:
-          | (
-              | 'Engine'
-              | 'Exhaust'
-              | 'Suspension'
-              | 'Brakes'
-              | 'Interior'
-              | 'Exterior'
-              | 'Electronics'
-              | 'Wheels/Tires'
-              | 'Forced Induction'
-              | 'Fuel System'
-            )
-          | null;
-        description?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  photos?: (number | null) | Media;
-  notes?: string | null;
+  make: string;
+  model: string;
+  year: number;
+  engineType: string;
+  transmission: string;
+  drivetrain: 'fwd' | 'rwd' | 'awd' | '4wd';
+  modifications: {
+    type?:
+      | (
+          | 'Engine'
+          | 'Exhaust'
+          | 'Suspension'
+          | 'Brakes'
+          | 'Interior'
+          | 'Exterior'
+          | 'Electronics'
+          | 'Wheels/Tires'
+          | 'Forced Induction'
+          | 'Fuel System'
+        )
+      | null;
+    description?: string | null;
+    id?: string | null;
+  }[];
+  photos: number | Media;
+  notes: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -236,9 +237,18 @@ export interface Intro {
  */
 export interface Page {
   id: number;
-  name: string;
+  title: string;
   'custom-slug': string;
-  layout?: (ContentBlock | ContentBlockReversed | TextBlock)[] | null;
+  info: string;
+  layout?: (ContentBlock | ContentBlockReversed | TextBlock | MediaBlock)[] | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -278,7 +288,7 @@ export interface TextBlock {
     root: {
       type: string;
       children: {
-        type: string;
+        type: any;
         version: number;
         [k: string]: unknown;
       }[];
@@ -293,6 +303,16 @@ export interface TextBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'text-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlock".
+ */
+export interface MediaBlock {
+  media: number | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -315,6 +335,15 @@ export interface Service {
   };
   updatedAt: string;
   createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -325,7 +354,7 @@ export interface CallToActionBlock {
     root: {
       type: string;
       children: {
-        type: string;
+        type: any;
         version: number;
         [k: string]: unknown;
       }[];
@@ -360,6 +389,23 @@ export interface PageBreak {
   background: number | Media;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-kv".
+ */
+export interface PayloadKv {
+  id: number;
+  key: string;
+  data:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -542,6 +588,15 @@ export interface ServicesSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -592,17 +647,35 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
  * via the `definition` "page_select".
  */
 export interface PageSelect<T extends boolean = true> {
-  name?: T;
+  title?: T;
   'custom-slug'?: T;
+  info?: T;
   layout?:
     | T
     | {
         'content-block'?: T | ContentBlockSelect<T>;
         'content-block-reversed'?: T | ContentBlockReversedSelect<T>;
         'text-block'?: T | TextBlockSelect<T>;
+        mediaBlock?: T | MediaBlockSelect<T>;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
       };
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlock_select".
+ */
+export interface MediaBlockSelect<T extends boolean = true> {
+  media?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -617,6 +690,14 @@ export interface PageBreaksSelect<T extends boolean = true> {
   background?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-kv_select".
+ */
+export interface PayloadKvSelect<T extends boolean = true> {
+  key?: T;
+  data?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

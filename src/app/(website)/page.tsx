@@ -38,7 +38,6 @@ export default async function Home() {
       collection: 'intros', // required
       sort: '-createdAt',
     })
-    console.log(result.docs[0].image)
     return result.docs.reverse()
   }
 
