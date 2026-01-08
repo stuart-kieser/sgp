@@ -17,3 +17,6 @@ services: # Postgres Database Service
 networks:
   my-network:
     external: true
+volumes:
+  certs:
+    external: true
