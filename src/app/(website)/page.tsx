@@ -1,14 +1,14 @@
-import OurStory from '@/components/OurStory'
+import OurStory from '@/components/ourStory'
 import ContactUs from './contact-us/page'
 import { PhotoBarGlobal } from '@/globals/PhotoBarGlobal'
 import { BrandGlobal } from '@/globals/BrandGlobal'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import PageBreak from '@/components/PageBreak'
+import PageBreak from '@/components/pageBreak'
 import Introduction from '@/components/introduction'
-import Service from '@/components/Services'
-import Brands from '@/components/Brands'
-import PhotoBar from '@/components/Photobar'
+import Service from '@/components/services'
+import Brands from '@/components/brands'
+import PhotoBar from '@/components/photobar'
 
 export default async function Home() {
   const payload = await getPayload({ config })
