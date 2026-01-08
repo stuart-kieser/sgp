@@ -24,6 +24,6 @@ ENV NODE_ENV=production HOSTNAME=0.0.0.0
 EXPOSE 3000
 
 COPY . .
-RUN npx payload migrate
+# RUN npx payload migrate
 RUN pnpm build
 CMD ["pnpm", "start"]

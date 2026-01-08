@@ -3,7 +3,7 @@ services: # Postgres Database Service
   payload:
     build:
       context: .
-      dockerfile: Dockerfile.reddit
+      dockerfile: Dockerfile.unopt
       extra_hosts:
         - 'host.docker.internal:host-gateway'
     extra_hosts:
@@ -11,13 +11,13 @@ services: # Postgres Database Service
 
     # restart: always
     environment:
-      DATABASE_URL: ${DATABASE_URI}
+      DATABASE_URL: ${PAYLOAD_PUBLIC_DATABASE_URI}
       PAYLOAD_SECRET: ${PAYLOAD_SECRET}
     ports:
       - '3000:3000'
 
-    # volumes:
-    #   - .:/home/node/app
+    volumes:
+      - ./media:/home/node/app/media
     # - node_modules:/home/node/app/node_modules
     # working_dir: /home/node/app/
     # depends_on:
