@@ -1,7 +1,7 @@
 // app/layout.tsx (or app/(site)/layout.tsx)
 import type { Metadata } from 'next'
 import './globals.css'
-import Logo from '@/components/Logo'
+import Logo from '@/components/logo'
 import NavBar from '@/components/navbar'
 import Footer from '@/components/Footer'
 import DetailsTag from '@/components/detailstag'
