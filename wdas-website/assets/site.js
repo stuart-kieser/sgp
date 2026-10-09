@@ -1,0 +1,4 @@
+
+const menu=document.querySelector('.menu');const nav=document.querySelector('.nav-links');if(menu)menu.addEventListener('click',()=>nav.classList.toggle('open'));
+document.querySelectorAll('.faq-q').forEach(q=>q.addEventListener('click',()=>q.parentElement.classList.toggle('open')));
+const form=document.querySelector('#partner-form');if(form){form.addEventListener('submit',e=>{e.preventDefault();let s=0;const reach=form.reach.value;if(['1000-4999','5000+','multiple'].includes(reach))s+=3;if(form.payroll.value==='yes')s+=2;if(form.funding.value==='yes')s+=3;if(form.payment.value==='yes')s+=2;if(form.orgtype.value==='consumer')s-=2;document.querySelector('#form-result').innerHTML=`Thank you. Your enquiry has been captured for review. <span class="score">Internal qualification score: ${s}</span>`;form.reset();});}
