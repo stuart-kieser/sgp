@@ -35,12 +35,19 @@ export const hero: Field = {
           label: 'Low Impact',
           value: 'lowImpact',
         },
+        {
+          label: 'Auto-scrolling Carousel',
+          value: 'autoScroll',
+        },
       ],
       required: true,
     },
     {
       name: 'richText',
       type: 'richText',
+      admin: {
+        condition: (_, { type } = {}) => type !== 'autoScroll',
+      },
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
           return [
@@ -55,9 +62,46 @@ export const hero: Field = {
     },
     linkGroup({
       overrides: {
+        admin: {
+          condition: (_, { type } = {}) => type !== 'autoScroll',
+          initCollapsed: true,
+        },
         maxRows: 2,
       },
     }),
+    {
+      name: 'scrollSpeed',
+      type: 'select',
+      label: 'Scroll speed',
+      defaultValue: 'slow',
+      options: [
+        { label: 'Fast', value: 'fast' },
+        { label: 'Medium', value: 'medium' },
+        { label: 'Slow', value: 'slow' },
+      ],
+      admin: {
+        condition: (_, { type } = {}) => type === 'autoScroll',
+      },
+      required: true,
+    },
+    {
+      name: 'slides',
+      type: 'array',
+      minRows: 1,
+      admin: {
+        condition: (_, { type } = {}) => type === 'autoScroll',
+      },
+      fields: [
+        { name: 'eyebrow', type: 'text' },
+        { name: 'title', type: 'text', required: true },
+        { name: 'description', type: 'textarea' },
+        { name: 'media', type: 'upload', relationTo: 'media', required: true },
+        linkGroup({
+          appearances: ['default', 'outline'],
+          overrides: { maxRows: 1 },
+        }),
+      ],
+    },
     {
       name: 'media',
       type: 'upload',

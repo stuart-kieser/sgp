@@ -13,7 +13,7 @@ export const StatsBandBlock: React.FC<StatsBandBlockProps> = ({
   return (
     <section className="container">
       <div
-        className="overflow-hidden rounded-[2rem] border border-border bg-foreground text-background shadow-sm"
+        className="overflow-hidden rounded-lg border border-border bg-foreground text-background shadow-sm"
         data-motion={resolveMotionPreset(motion?.sectionAnimation)}
       >
         <div className="grid gap-10 px-6 py-10 md:px-10 lg:grid-cols-[0.9fr_1.1fr] lg:py-12">
@@ -36,7 +36,7 @@ export const StatsBandBlock: React.FC<StatsBandBlockProps> = ({
           <div className="grid gap-4 sm:grid-cols-2">
             {(items || []).map((item, index) => (
               <div
-                className="rounded-[1.5rem] border border-background/10 bg-background/8 p-5"
+                className="rounded-lg border border-background/10 bg-background/8 p-5"
                 data-motion={resolveMotionPreset(motion?.itemAnimation, index)}
                 key={index}
                 style={motionDelayStyle(index, motion?.stagger ?? 100)}

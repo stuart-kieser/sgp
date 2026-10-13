@@ -20,11 +20,13 @@ export const ComparisonTableBlock: React.FC<ComparisonTableBlockProps> = ({
         motion={resolveMotionPreset(motion?.introAnimation)}
         title={title}
       />
-      <div className="overflow-x-auto rounded-[2rem] border border-border bg-card/70 shadow-sm">
+      <div className="overflow-x-auto rounded-lg border border-border bg-card/70 shadow-sm">
         <table className="min-w-full border-collapse">
           <thead>
             <tr className="border-b border-border">
-              <th className="px-6 py-4 text-left text-sm uppercase tracking-[0.16em] text-muted-foreground">Feature</th>
+              <th className="px-6 py-4 text-left text-sm uppercase tracking-[0.16em] text-muted-foreground">
+                Feature
+              </th>
               {(columns || []).map((column, index) => (
                 <th
                   className="px-6 py-4 text-left text-sm uppercase tracking-[0.16em] text-muted-foreground"

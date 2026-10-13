@@ -13,7 +13,10 @@ export const TimelineBlock: React.FC<TimelineBlockProps> = ({
 }) => {
   return (
     <section className="container">
-      <div className="mb-10 max-w-3xl space-y-4" data-motion={resolveMotionPreset(motion?.introAnimation)}>
+      <div
+        className="mb-10 max-w-3xl space-y-4"
+        data-motion={resolveMotionPreset(motion?.introAnimation)}
+      >
         {eyebrow ? (
           <p className="text-sm font-medium uppercase tracking-[0.24em] text-muted-foreground">
             {eyebrow}
@@ -40,7 +43,7 @@ export const TimelineBlock: React.FC<TimelineBlockProps> = ({
               </p>
             </div>
 
-            <div className="rounded-[1.75rem] border border-border bg-card/80 p-6 shadow-sm">
+            <div className="rounded-lg border border-border bg-card/80 p-6 shadow-sm">
               <h3 className="text-2xl font-semibold tracking-tight">{item.title}</h3>
               <RichText className="mt-4" data={item.description} enableGutter={false} />
 

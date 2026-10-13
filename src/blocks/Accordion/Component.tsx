@@ -28,7 +28,7 @@ export const AccordionBlock: React.FC<AccordionBlockProps> = ({
         <div className="space-y-4">
           {(items || []).map((item, index) => (
             <details
-              className="group rounded-3xl border border-border bg-card/70 p-6 shadow-sm backdrop-blur"
+              className="group rounded-lg border border-border bg-card/70 p-6 shadow-sm backdrop-blur"
               data-motion={resolveMotionPreset(motion?.itemAnimation, index)}
               key={index}
               open={item.defaultOpen ?? false}

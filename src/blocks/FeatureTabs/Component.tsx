@@ -6,7 +6,13 @@ import { SectionHeader } from '@/blocks/shared/render'
 
 import type { FeatureTabsBlock as FeatureTabsBlockProps } from '@/payload-types'
 
-export const FeatureTabsBlock: React.FC<FeatureTabsBlockProps> = ({ eyebrow, intro, motion, tabs, title }) => {
+export const FeatureTabsBlock: React.FC<FeatureTabsBlockProps> = ({
+  eyebrow,
+  intro,
+  motion,
+  tabs,
+  title,
+}) => {
   return (
     <section className="container">
       <SectionHeader
@@ -19,7 +25,7 @@ export const FeatureTabsBlock: React.FC<FeatureTabsBlockProps> = ({ eyebrow, int
       <div className="space-y-4">
         {(tabs || []).map((tab, index) => (
           <details
-            className="group rounded-[2rem] border border-border bg-card/70 p-6 shadow-sm"
+            className="group rounded-lg border border-border bg-card/70 p-6 shadow-sm"
             data-motion={resolveMotionPreset(motion?.itemAnimation, index)}
             key={index}
             open={index === 0}
@@ -27,7 +33,9 @@ export const FeatureTabsBlock: React.FC<FeatureTabsBlockProps> = ({ eyebrow, int
           >
             <summary className="flex list-none items-center justify-between gap-4">
               <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{tab.label}</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                  {tab.label}
+                </p>
                 <h3 className="mt-1 text-2xl font-semibold tracking-tight">{tab.title}</h3>
               </div>
               <span className="rounded-full border border-border px-3 py-1 text-xs uppercase tracking-[0.18em] text-muted-foreground">
@@ -38,7 +46,7 @@ export const FeatureTabsBlock: React.FC<FeatureTabsBlockProps> = ({ eyebrow, int
               <RichText data={tab.content} enableGutter={false} />
               <div className="space-y-4">
                 {tab.media && typeof tab.media === 'object' ? (
-                  <div className="overflow-hidden rounded-[1.5rem]">
+                  <div className="overflow-hidden rounded-lg">
                     <Media imgClassName="aspect-[4/3] w-full object-cover" resource={tab.media} />
                   </div>
                 ) : null}

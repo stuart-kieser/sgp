@@ -4,7 +4,13 @@ import { SectionHeader } from '@/blocks/shared/render'
 
 import type { PricingGridBlock as PricingGridBlockProps } from '@/payload-types'
 
-export const PricingGridBlock: React.FC<PricingGridBlockProps> = ({ eyebrow, intro, motion, plans, title }) => {
+export const PricingGridBlock: React.FC<PricingGridBlockProps> = ({
+  eyebrow,
+  intro,
+  motion,
+  plans,
+  title,
+}) => {
   return (
     <section className="container">
       <SectionHeader
@@ -18,7 +24,7 @@ export const PricingGridBlock: React.FC<PricingGridBlockProps> = ({ eyebrow, int
       <div className="grid gap-6 lg:grid-cols-3">
         {(plans || []).map((plan, index) => (
           <article
-            className={`rounded-[2rem] border p-6 shadow-sm ${
+            className={`rounded-lg border p-6 shadow-sm ${
               plan.featured
                 ? 'border-foreground bg-foreground text-background'
                 : 'border-border bg-card/80 text-foreground'
@@ -28,20 +34,34 @@ export const PricingGridBlock: React.FC<PricingGridBlockProps> = ({ eyebrow, int
             style={motionDelayStyle(index, motion?.stagger ?? 120)}
           >
             <div className="space-y-3">
-              <p className={`text-sm uppercase tracking-[0.2em] ${plan.featured ? 'text-background/70' : 'text-muted-foreground'}`}>
+              <p
+                className={`text-sm uppercase tracking-[0.2em] ${plan.featured ? 'text-background/70' : 'text-muted-foreground'}`}
+              >
                 {plan.name}
               </p>
               <p className="text-4xl font-semibold tracking-tight">{plan.price}</p>
               {plan.billingNote ? (
-                <p className={`text-sm ${plan.featured ? 'text-background/70' : 'text-muted-foreground'}`}>{plan.billingNote}</p>
+                <p
+                  className={`text-sm ${plan.featured ? 'text-background/70' : 'text-muted-foreground'}`}
+                >
+                  {plan.billingNote}
+                </p>
               ) : null}
-              {plan.summary ? <p className={`text-sm leading-7 ${plan.featured ? 'text-background/80' : 'text-muted-foreground'}`}>{plan.summary}</p> : null}
+              {plan.summary ? (
+                <p
+                  className={`text-sm leading-7 ${plan.featured ? 'text-background/80' : 'text-muted-foreground'}`}
+                >
+                  {plan.summary}
+                </p>
+              ) : null}
             </div>
             <div className={`my-6 h-px ${plan.featured ? 'bg-background/15' : 'bg-border'}`} />
             <ul className="space-y-3 text-sm">
               {(plan.features || []).map((feature, featureIndex) => (
                 <li className="flex gap-3" key={featureIndex}>
-                  <span className={plan.featured ? 'text-background/70' : 'text-muted-foreground'}>•</span>
+                  <span className={plan.featured ? 'text-background/70' : 'text-muted-foreground'}>
+                    •
+                  </span>
                   <span>{feature.label}</span>
                 </li>
               ))}
@@ -49,7 +69,13 @@ export const PricingGridBlock: React.FC<PricingGridBlockProps> = ({ eyebrow, int
             {plan.links?.[0]?.link ? (
               <div className="mt-6">
                 <CMSLink
-                  appearance={plan.featured ? 'outline' : plan.links[0].link.appearance === 'outline' ? 'outline' : 'default'}
+                  appearance={
+                    plan.featured
+                      ? 'outline'
+                      : plan.links[0].link.appearance === 'outline'
+                        ? 'outline'
+                        : 'default'
+                  }
                   {...plan.links[0].link}
                 />
               </div>

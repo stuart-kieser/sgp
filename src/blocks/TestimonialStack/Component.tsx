@@ -23,7 +23,7 @@ export const TestimonialStackBlock: React.FC<TestimonialStackBlockProps> = ({
       <div className="space-y-6">
         {(testimonials || []).map((item, index) => (
           <article
-            className="grid gap-6 rounded-[2rem] border border-border bg-card/75 p-6 shadow-sm md:grid-cols-[auto_1fr]"
+            className="grid gap-6 rounded-lg border border-border bg-card/75 p-6 shadow-sm md:grid-cols-[auto_1fr]"
             data-motion={resolveMotionPreset(motion?.itemAnimation, index)}
             key={index}
             style={motionDelayStyle(index, motion?.stagger ?? 160)}
@@ -45,9 +45,7 @@ export const TestimonialStackBlock: React.FC<TestimonialStackBlockProps> = ({
               <p className="text-xl leading-8 tracking-tight md:text-2xl">"{item.quote}"</p>
               <div className="text-sm text-muted-foreground">
                 <p className="font-medium text-foreground">{item.author}</p>
-                <p>
-                  {[item.role, item.company].filter(Boolean).join(' · ')}
-                </p>
+                <p>{[item.role, item.company].filter(Boolean).join(' · ')}</p>
               </div>
             </div>
           </article>

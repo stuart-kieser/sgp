@@ -5,7 +5,13 @@ import { SectionHeader } from '@/blocks/shared/render'
 
 import type { ProcessStepsBlock as ProcessStepsBlockProps } from '@/payload-types'
 
-export const ProcessStepsBlock: React.FC<ProcessStepsBlockProps> = ({ eyebrow, intro, motion, steps, title }) => {
+export const ProcessStepsBlock: React.FC<ProcessStepsBlockProps> = ({
+  eyebrow,
+  intro,
+  motion,
+  steps,
+  title,
+}) => {
   return (
     <section className="container">
       <SectionHeader
@@ -18,7 +24,7 @@ export const ProcessStepsBlock: React.FC<ProcessStepsBlockProps> = ({ eyebrow, i
       <div className="grid gap-6">
         {(steps || []).map((step, index) => (
           <article
-            className="grid gap-6 rounded-[2rem] border border-border bg-card/70 p-6 shadow-sm lg:grid-cols-[auto_1fr_auto]"
+            className="grid gap-6 rounded-lg border border-border bg-card/70 p-6 shadow-sm lg:grid-cols-[auto_1fr_auto]"
             data-motion={resolveMotionPreset(motion?.itemAnimation, index)}
             key={index}
             style={motionDelayStyle(index, motion?.stagger ?? 140)}
@@ -32,7 +38,7 @@ export const ProcessStepsBlock: React.FC<ProcessStepsBlockProps> = ({ eyebrow, i
             </div>
             {step.media && typeof step.media === 'object' ? (
               <Media
-                className="overflow-hidden rounded-[1.25rem]"
+                className="overflow-hidden rounded-lg"
                 imgClassName="h-32 w-full min-w-40 object-cover"
                 resource={step.media}
               />

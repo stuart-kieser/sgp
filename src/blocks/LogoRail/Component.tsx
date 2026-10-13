@@ -6,7 +6,13 @@ import { SectionHeader } from '@/blocks/shared/render'
 
 import type { LogoRailBlock as LogoRailBlockProps } from '@/payload-types'
 
-export const LogoRailBlock: React.FC<LogoRailBlockProps> = ({ eyebrow, intro, logos, motion, title }) => {
+export const LogoRailBlock: React.FC<LogoRailBlockProps> = ({
+  eyebrow,
+  intro,
+  logos,
+  motion,
+  title,
+}) => {
   return (
     <section className="container">
       <SectionHeader
@@ -32,7 +38,7 @@ export const LogoRailBlock: React.FC<LogoRailBlockProps> = ({ eyebrow, intro, lo
 
           return (
             <div
-              className="group rounded-[1.5rem] border border-border bg-card/70 p-6 shadow-sm"
+              className="group rounded-lg border border-border bg-card/70 p-6 shadow-sm"
               data-motion={resolveMotionPreset(motion?.itemAnimation, index)}
               key={index}
               style={motionDelayStyle(index, motion?.stagger ?? 80)}

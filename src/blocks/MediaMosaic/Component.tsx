@@ -4,7 +4,13 @@ import { SectionHeader } from '@/blocks/shared/render'
 
 import type { MediaMosaicBlock as MediaMosaicBlockProps } from '@/payload-types'
 
-export const MediaMosaicBlock: React.FC<MediaMosaicBlockProps> = ({ eyebrow, intro, items, motion, title }) => {
+export const MediaMosaicBlock: React.FC<MediaMosaicBlockProps> = ({
+  eyebrow,
+  intro,
+  items,
+  motion,
+  title,
+}) => {
   return (
     <section className="container">
       <SectionHeader
@@ -17,7 +23,7 @@ export const MediaMosaicBlock: React.FC<MediaMosaicBlockProps> = ({ eyebrow, int
       <div className="grid auto-rows-[220px] gap-4 md:grid-cols-2 xl:grid-cols-4">
         {(items || []).map((item, index) => (
           <article
-            className={`relative overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm ${
+            className={`relative overflow-hidden rounded-lg border border-border bg-card shadow-sm ${
               index % 5 === 0 ? 'md:col-span-2 md:row-span-2' : ''
             }`}
             data-motion={resolveMotionPreset(motion?.itemAnimation, index)}

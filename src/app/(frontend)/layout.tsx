@@ -37,8 +37,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               preview: isEnabled,
             }}
           />
-
-          <Header />
+          <div className='w-full bg-[#00a79d]'>
+                    <Header />
+          </div>
           {children}
           <Footer />
         </Providers>

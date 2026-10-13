@@ -5,11 +5,18 @@ import { SectionHeader } from '@/blocks/shared/render'
 
 import type { CtaBandBlock as CtaBandBlockProps } from '@/payload-types'
 
-export const CtaBandBlock: React.FC<CtaBandBlockProps> = ({ eyebrow, intro, links, media, motion, title }) => {
+export const CtaBandBlock: React.FC<CtaBandBlockProps> = ({
+  eyebrow,
+  intro,
+  links,
+  media,
+  motion,
+  title,
+}) => {
   return (
     <section className="container">
       <div
-        className="overflow-hidden rounded-[2rem] border border-border bg-foreground text-background shadow-sm"
+        className="overflow-hidden rounded-lg border border-border bg-foreground text-background shadow-sm"
         data-motion={resolveMotionPreset(motion?.sectionAnimation)}
       >
         <div className="grid gap-8 px-6 py-10 md:px-10 lg:grid-cols-[1.1fr_0.9fr]">
@@ -30,7 +37,7 @@ export const CtaBandBlock: React.FC<CtaBandBlockProps> = ({ eyebrow, intro, link
             ) : null}
           </div>
           {media && typeof media === 'object' ? (
-            <div className="overflow-hidden rounded-[1.5rem]">
+            <div className="overflow-hidden rounded-lg">
               <Media imgClassName="aspect-[4/3] w-full object-cover" resource={media} />
             </div>
           ) : null}

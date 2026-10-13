@@ -10,6 +10,10 @@
 @custom-variant xl (@media (width >= theme(--breakpoint-xl)));
 @custom-variant 2xl (@media (width >= theme(--breakpoint-2xl)));
 
+h1 {
+  font-family: 'SabreShark', sans-serif;
+}
+
 @layer base {
   h1,
   h2,
@@ -261,10 +265,12 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-xl: var(--radius);
+  --radius-2xl: var(--radius);
+  --radius-3xl: var(--radius);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -278,12 +284,23 @@
   --color-error: var(--error);
 }
 
+@theme {
+  --font-sabre: 'SabreShark', 'sans-serif';
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
+  }
+
+  @font-face {
+    font-family: 'SabreShark';
+    font-style: normal;
+    font-weight: normal;
+    src: url('/fonts/sabreshark.ttf') format('truetype');
   }
 }
 

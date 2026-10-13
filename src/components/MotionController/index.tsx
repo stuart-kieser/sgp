@@ -7,7 +7,7 @@ const observerOptions: IntersectionObserverInit = {
   threshold: 0.18,
 }
 
-const updateParallax = (elements: HTMLElement[]) => {
+const updateParallax = (elements: Iterable<HTMLElement>) => {
   const viewportHeight = window.innerHeight || 1
 
   elements.forEach((element) => {
@@ -35,8 +35,8 @@ export const MotionController = () => {
       }
     }
 
-    const motionElements = Array.from(document.querySelectorAll<HTMLElement>('[data-motion]'))
-    const parallaxElements = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'))
+    const observedMotionElements = new WeakSet<HTMLElement>()
+    const parallaxElements = new Set<HTMLElement>()
 
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -46,11 +46,6 @@ export const MotionController = () => {
         }
       })
     }, observerOptions)
-
-    motionElements.forEach((element) => {
-      revealObserver.observe(element)
-    })
-    root.setAttribute('data-motion-state', 'ready')
 
     let frame = 0
 
@@ -63,12 +58,84 @@ export const MotionController = () => {
       })
     }
 
+    const observeMotionElement = (element: HTMLElement) => {
+      if (element.hasAttribute('data-in-view') || observedMotionElements.has(element)) return
+
+      observedMotionElements.add(element)
+      revealObserver.observe(element)
+    }
+
+    const observeNode = (node: Node) => {
+      if (!(node instanceof HTMLElement)) return
+
+      if (node.matches('[data-motion]')) observeMotionElement(node)
+      node.querySelectorAll<HTMLElement>('[data-motion]').forEach(observeMotionElement)
+
+      if (node.matches('[data-parallax]')) parallaxElements.add(node)
+      node.querySelectorAll<HTMLElement>('[data-parallax]').forEach((element) => {
+        parallaxElements.add(element)
+      })
+    }
+
+    const unobserveNode = (node: Node) => {
+      if (!(node instanceof HTMLElement)) return
+
+      if (node.matches('[data-motion]')) {
+        revealObserver.unobserve(node)
+        observedMotionElements.delete(node)
+      }
+      node.querySelectorAll<HTMLElement>('[data-motion]').forEach((element) => {
+        revealObserver.unobserve(element)
+        observedMotionElements.delete(element)
+      })
+
+      if (node.matches('[data-parallax]')) parallaxElements.delete(node)
+      node.querySelectorAll<HTMLElement>('[data-parallax]').forEach((element) => {
+        parallaxElements.delete(element)
+      })
+    }
+
+    document.querySelectorAll<HTMLElement>('[data-motion]').forEach(observeMotionElement)
+    document.querySelectorAll<HTMLElement>('[data-parallax]').forEach((element) => {
+      parallaxElements.add(element)
+    })
+
+    const mutationObserver = new MutationObserver((mutations) => {
+      let shouldUpdateParallax = false
+
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes') {
+          observeNode(mutation.target)
+          shouldUpdateParallax = true
+          return
+        }
+
+        mutation.removedNodes.forEach(unobserveNode)
+        mutation.addedNodes.forEach(observeNode)
+        if (mutation.addedNodes.length > 0 || mutation.removedNodes.length > 0) {
+          shouldUpdateParallax = true
+        }
+      })
+
+      if (shouldUpdateParallax) scheduleParallax()
+    })
+
+    mutationObserver.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['data-motion', 'data-parallax'],
+      childList: true,
+      subtree: true,
+    })
+
+    root.setAttribute('data-motion-state', 'ready')
+
     updateParallax(parallaxElements)
 
     window.addEventListener('scroll', scheduleParallax, { passive: true })
     window.addEventListener('resize', scheduleParallax)
 
     return () => {
+      mutationObserver.disconnect()
       revealObserver.disconnect()
       window.removeEventListener('scroll', scheduleParallax)
       window.removeEventListener('resize', scheduleParallax)
