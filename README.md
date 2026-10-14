@@ -298,7 +298,18 @@ Before deploying your app, you need to:
 
 #### Ubuntu server with the Nginx proxy
 
-This repository includes a standalone production Docker image. For the shared Ubuntu 22.04 deployment, use the companion [proxy repository](../../proxy/README.md), which builds this app, runs PostgreSQL privately, and routes public traffic through Nginx. Create `.env.production` from `.env.production.example` and replace all three secrets before starting the stack. The deployment's one-off `payload-migrate` service applies committed schema migrations before the app starts; content seeding and page generation remain manual. Do not use the development `docker-compose.yml` for production.
+This repository includes `docker-compose.production.yml` for running SGP independently behind the standalone Nginx proxy. The production Compose file runs this app and its private PostgreSQL database, then joins the app to the external Docker network `proxy-network` so Nginx can reach the service name `sgp-app:3000`. Start the proxy first; setup instructions, including Nginx's `conf.d` routing, are in the companion [proxy repository README](../../proxy/README.md).
+
+Copy `.env.compose.example` to `.env.compose` and set a random `POSTGRES_PASSWORD`. Copy `.env.production.example` to `.env.production` and set separate random values for all three Payload secrets. The Compose file's `sgp-migrate` one-off service applies committed schema migrations; content seeding and page generation remain manual. Do not use the development `docker-compose.yml` for production.
+
+After starting Nginx from the proxy repository, deploy the app from this repository:
+
+```bash
+docker compose --env-file .env.compose -f docker-compose.production.yml up -d sgp-postgres
+docker compose --env-file .env.compose -f docker-compose.production.yml run --build --rm sgp-migrate
+# Run page/content generation separately when ready.
+docker compose --env-file .env.compose -f docker-compose.production.yml up -d --build sgp-app
+```
 
 You can also deploy your app manually, check out the [deployment documentation](https://payloadcms.com/docs/production/deployment) for full details.
 

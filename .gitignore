@@ -4,6 +4,7 @@ node_modules
 .DS_Store
 .env
 .env.production
+.env.compose
 .next
 next-env.d.ts
 .vercel

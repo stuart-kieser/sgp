@@ -1,0 +1,89 @@
+services:
+  sgp-postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: payload
+      POSTGRES_USER: payload
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U payload -d payload"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+    networks:
+      - backend
+
+  sgp-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_SERVER_URL: https://${SITE_DOMAIN:-sgperf.co.za}
+    env_file:
+      - .env.production
+    environment:
+      DATABASE_URL: postgresql://payload:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@sgp-postgres:5432/payload
+      NEXT_PUBLIC_SERVER_URL: https://${SITE_DOMAIN:-sgperf.co.za}
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: "3000"
+    depends_on:
+      sgp-postgres:
+        condition: service_healthy
+    volumes:
+      - media-data:/app/public/media
+    expose:
+      - "3000"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+    restart: unless-stopped
+    networks:
+      - backend
+      - proxy
+
+  sgp-migrate:
+    profiles: ["tools"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+      args:
+        NEXT_PUBLIC_SERVER_URL: https://${SITE_DOMAIN:-sgperf.co.za}
+    env_file:
+      - .env.production
+    environment:
+      DATABASE_URL: postgresql://payload:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@sgp-postgres:5432/payload
+      NEXT_PUBLIC_SERVER_URL: https://${SITE_DOMAIN:-sgperf.co.za}
+      NODE_ENV: production
+    depends_on:
+      sgp-postgres:
+        condition: service_healthy
+    command: ["pnpm", "payload", "migrate"]
+    networks:
+      - backend
+
+networks:
+  backend:
+    internal: true
+  proxy:
+    external: true
+    name: proxy-network
+
+volumes:
+  postgres-data:
+    name: sgp-postgres-data
+  media-data:
+    name: sgp-media-data
