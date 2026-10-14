@@ -118,7 +118,7 @@ A deep editorial experience that allows complete freedom to focus just on writin
 
 All posts and pages are draft-enabled so you can preview them before publishing them to your website. To do this, these collections use [Versions](https://payloadcms.com/docs/configuration/collections#versions) with `drafts` set to `true`. This means that when you create a new post, project, or page, it will be saved as a draft and will not be visible on your website until you publish it. This also means that you can preview your draft before publishing it to your website. To do this, we automatically format a custom URL which redirects to your front-end to securely fetch the draft version of your content.
 
-Since the front-end of this template is statically generated, this also means that pages, posts, and projects will need to be regenerated as changes are made to published documents. To do this, we use an `afterChange` hook to regenerate the front-end when a document has changed and its `_status` is `published`.
+The self-hosted production build renders database-backed pages and posts on request, so content changes are visible without rebuilding the app. The `afterChange` hooks continue to revalidate affected Payload data.
 
 For more details on how to extend this functionality, see the official [Draft Preview Example](https://github.com/payloadcms/payload/tree/3.x/examples/draft-preview).
 
@@ -295,6 +295,10 @@ Before deploying your app, you need to:
 
 1. Ensure your app builds and serves in production. See [Production](#production) for more details.
 2. You can then deploy Payload as you would any other Node.js or Next.js application either directly on a VPS, DigitalOcean's Apps Platform, via Coolify or more. More guides coming soon.
+
+#### Ubuntu server with the Nginx proxy
+
+This repository includes a standalone production Docker image. For the shared Ubuntu 22.04 deployment, use the companion [proxy repository](../../proxy/README.md), which builds this app, runs PostgreSQL privately, and routes public traffic through Nginx. Create `.env.production` from `.env.production.example` and replace all three secrets before starting the stack. The deployment's one-off `payload-migrate` service applies committed schema migrations before the app starts; content seeding and page generation remain manual. Do not use the development `docker-compose.yml` for production.
 
 You can also deploy your app manually, check out the [deployment documentation](https://payloadcms.com/docs/production/deployment) for full details.
 

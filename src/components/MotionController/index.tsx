@@ -10,14 +10,14 @@ const observerOptions: IntersectionObserverInit = {
 const updateParallax = (elements: Iterable<HTMLElement>) => {
   const viewportHeight = window.innerHeight || 1
 
-  elements.forEach((element) => {
+  for (const element of elements) {
     const rect = element.getBoundingClientRect()
     const center = rect.top + rect.height / 2
     const offset = (viewportHeight / 2 - center) / viewportHeight
     const strength = Number(element.dataset.parallax || 18)
 
     element.style.setProperty('--parallax-y', `${offset * strength}px`)
-  })
+  }
 }
 
 export const MotionController = () => {

@@ -25,6 +25,11 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+ARG NEXT_PUBLIC_SERVER_URL
+ENV NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL}
+# Payload initializes during prerendering; the real secret is injected only at runtime.
+ENV PAYLOAD_SECRET=build-only-placeholder-not-for-runtime
+
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
@@ -33,7 +38,13 @@ COPY . .
 RUN \
   if [ -f yarn.lock ]; then yarn run build; \
   elif [ -f package-lock.json ]; then npm run build; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
+  elif [ -f pnpm-lock.yaml ]; then \
+    corepack enable pnpm && \
+    pnpm next typegen && \
+    pnpm exec tsc --noEmit && \
+    pnpm next build --experimental-build-mode compile && \
+    pnpm next build --experimental-build-mode generate-env && \
+    pnpm run postbuild; \
   else echo "Lockfile not found." && exit 1; \
   fi
 
@@ -50,6 +61,7 @@ RUN adduser --system --uid 1001 nextjs
 
 # Remove this line if you do not have this folder
 COPY --from=builder /app/public ./public
+RUN mkdir -p /app/public/media && chown -R nextjs:nodejs /app/public
 
 # Set the correct permission for prerender cache
 RUN mkdir .next
