@@ -7,6 +7,7 @@
   "packageManager": "pnpm@10.20.0",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
+    "generate:pages": "next build --experimental-build-mode compile && next build --experimental-build-mode generate",
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "dev:prod": "cross-env NODE_OPTIONS=--no-deprecation rm -rf .next && pnpm build && pnpm start",

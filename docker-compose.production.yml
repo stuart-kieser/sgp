@@ -35,6 +35,7 @@ services:
         condition: service_healthy
     volumes:
       - media-data:/app/public/media
+      - next-build:/app/.next
     expose:
       - "3000"
     healthcheck:
@@ -75,6 +76,30 @@ services:
     networks:
       - backend
 
+  sgp-generate:
+    profiles: ["tools"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+      args:
+        NEXT_PUBLIC_SERVER_URL: https://${SITE_DOMAIN:-sgperf.co.za}
+    env_file:
+      - .env.production
+    environment:
+      DATABASE_URL: postgresql://payload:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@sgp-postgres:5432/payload
+      NEXT_PUBLIC_SERVER_URL: https://${SITE_DOMAIN:-sgperf.co.za}
+      NODE_ENV: production
+    depends_on:
+      sgp-postgres:
+        condition: service_healthy
+    command: ["npm", "run", "generate:pages"]
+    user: "1001:1001"
+    volumes:
+      - next-build:/app/.next
+    networks:
+      - backend
+
 networks:
   backend:
     internal: true
@@ -87,3 +112,5 @@ volumes:
     name: sgp-postgres-data
   media-data:
     name: sgp-media-data
+  next-build:
+    name: sgp-next-build-data

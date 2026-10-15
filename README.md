@@ -300,14 +300,22 @@ Before deploying your app, you need to:
 
 This repository includes `docker-compose.production.yml` for running SGP independently behind the standalone Nginx proxy. The production Compose file runs this app and its private PostgreSQL database, then joins the app to the external Docker network `proxy-network` so Nginx can reach the service name `sgp-app:3000`. Start the proxy first; setup instructions, including Nginx's `conf.d` routing, are in the companion [proxy repository README](../../proxy/README.md).
 
-Copy `.env.compose.example` to `.env.compose` and set a random `POSTGRES_PASSWORD`. Copy `.env.production.example` to `.env.production` and set separate random values for all three Payload secrets. The Compose file's `sgp-migrate` one-off service applies committed schema migrations; content seeding and page generation remain manual. Do not use the development `docker-compose.yml` for production.
+Copy `.env.compose.example` to `.env.compose` and set a random `POSTGRES_PASSWORD`. Copy `.env.production.example` to `.env.production` and set separate random values for all three Payload secrets. The Compose file's `sgp-migrate` one-off service applies committed schema migrations. Once the database is migrated, `sgp-generate` can generate pages with the database available; it writes build output to a shared volume used by the app. Do not use the development `docker-compose.yml` for production.
 
 After starting Nginx from the proxy repository, deploy the app from this repository:
 
 ```bash
 docker compose --env-file .env.compose -f docker-compose.production.yml up -d sgp-postgres
 docker compose --env-file .env.compose -f docker-compose.production.yml run --build --rm sgp-migrate
-# Run page/content generation separately when ready.
+docker compose --env-file .env.compose -f docker-compose.production.yml run --build --rm sgp-generate
+docker compose --env-file .env.compose -f docker-compose.production.yml up -d --build sgp-app
+```
+
+The `sgp-generate` service runs `npm run generate:pages` in the full build environment, not inside the slim running app container. It first compiles the Next.js app and then runs the experimental generate phase against the migrated database. The generated `.next` output is shared with `sgp-app`. Before regenerating while the app is already running, stop it; start it again after generation completes:
+
+```bash
+docker compose --env-file .env.compose -f docker-compose.production.yml stop sgp-app
+docker compose --env-file .env.compose -f docker-compose.production.yml run --build --rm sgp-generate
 docker compose --env-file .env.compose -f docker-compose.production.yml up -d --build sgp-app
 ```
 
