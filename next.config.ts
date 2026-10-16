@@ -47,7 +47,6 @@ const nextConfig: NextConfig = {
     return webpackConfig
   },
   reactStrictMode: true,
-  output: 'standalone',
   redirects,
   turbopack: {
     root: path.resolve(dirname),

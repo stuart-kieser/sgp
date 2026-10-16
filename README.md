@@ -298,7 +298,7 @@ Before deploying your app, you need to:
 
 #### Ubuntu server with the Nginx proxy
 
-This repository includes `docker-compose.production.yml` for running SGP independently behind the standalone Nginx proxy. The production Compose file runs this app and its private PostgreSQL database, then joins the app to the external Docker network `proxy-network` so Nginx can reach the service name `sgp-app:3000`. Start the proxy first; setup instructions, including Nginx's `conf.d` routing, are in the companion [proxy repository README](../../proxy/README.md).
+This repository includes `docker-compose.production.yml` for running SGP independently behind the Nginx reverse proxy. The production Compose file runs this app and its private PostgreSQL database, then joins the app to the external Docker network `proxy-network` so Nginx can reach the service name `sgp-app:3000`. The app uses a standard Next.js production build (standalone output is disabled) and starts with `next start`. Start the proxy first; setup instructions, including Nginx's `conf.d` routing, are in the companion [proxy repository README](../../proxy/README.md).
 
 Copy `.env.compose.example` to `.env.compose` and set a random `POSTGRES_PASSWORD`. Copy `.env.production.example` to `.env.production` and set separate random values for all three Payload secrets. The Compose file's `sgp-migrate` one-off service applies committed schema migrations. Once the database is migrated, `sgp-generate` can generate pages with the database available; it writes build output to a shared volume used by the app. Do not use the development `docker-compose.yml` for production.
 
