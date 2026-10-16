@@ -25,7 +25,7 @@ services:
     env_file:
       - .env.production
     environment:
-      DATABASE_URL: postgresql://payload:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@sgp-postgres:5432/payload
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@sgp-postgres:5432/payload
       NEXT_PUBLIC_SERVER_URL: https://${SITE_DOMAIN:-sgperf.co.za}
       NODE_ENV: production
       HOSTNAME: 0.0.0.0
