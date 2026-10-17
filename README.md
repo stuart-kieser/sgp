@@ -311,14 +311,14 @@ docker compose --env-file .env.production -f docker-compose.production.yml up -d
 docker compose --env-file .env.production -f docker-compose.production.yml exec sgp-app npm run generate:pages
 ```
 
-The production image includes the app's `src` files and `tsconfig.json` so the `generate:pages` script can run inside the existing app container. It runs the Next.js compile phase and then the experimental generate phase against the database, writing to the persistent `.next` volume; no separate generator image or container is created. Run it during a maintenance window because it updates build output used by the running server. Restart the app after generation completes:
+The production image includes the app's `src` files and build configuration so `generate:pages` can run inside the existing app container. It runs the Next.js compile phase and then the experimental generate phase against the database, writing to the persistent `.next` volume; no separate generator image or container is created. The volume is versioned so Docker initializes it from the production build in the image instead of reusing the previous empty or incomplete build volume. Run generation during a maintenance window because it updates build output used by the running server. Restart the app after generation completes.
 
 ```bash
 docker compose --env-file .env.production -f docker-compose.production.yml exec sgp-app npm run generate:pages
 docker compose --env-file .env.production -f docker-compose.production.yml restart sgp-app
 ```
 
-After updating the Compose file on a server that already built the old generator image, you can reclaim its disk space with `docker image rm sgp-sgp-generate` if that image exists.
+After updating the Compose file, the previous `sgp-next-build-data` volume is no longer used. To reclaim it, first confirm no containers still use it with `docker ps -a --filter volume=sgp-next-build-data`; remove it only if that command shows no containers: `docker volume rm sgp-next-build-data`.
 
 You can also deploy your app manually, check out the [deployment documentation](https://payloadcms.com/docs/production/deployment) for full details.
 

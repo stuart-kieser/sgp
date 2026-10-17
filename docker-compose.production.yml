@@ -89,4 +89,4 @@ volumes:
   media-data:
     name: sgp-media-data
   next-build:
-    name: sgp-next-build-data
+    name: sgp-next-build-data-v2

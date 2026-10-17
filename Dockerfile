@@ -63,6 +63,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/src ./src
 COPY --from=builder --chown=nextjs:nodejs /app/tsconfig.json ./tsconfig.json
+COPY --from=builder --chown=nextjs:nodejs /app/next-env.d.ts ./next-env.d.ts
+COPY --from=builder --chown=nextjs:nodejs /app/postcss.config.js /app/tailwind.config.mjs ./
 COPY --chown=nextjs:nodejs package.json next.config.ts redirects.ts ./
 RUN mkdir -p /app/public/media && chown -R nextjs:nodejs /app/public
 
