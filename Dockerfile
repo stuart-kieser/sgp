@@ -61,6 +61,8 @@ RUN adduser --system --uid 1001 nextjs
 COPY --from=deps --chown=nextjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/src ./src
+COPY --from=builder --chown=nextjs:nodejs /app/tsconfig.json ./tsconfig.json
 COPY --chown=nextjs:nodejs package.json next.config.ts redirects.ts ./
 RUN mkdir -p /app/public/media && chown -R nextjs:nodejs /app/public
 

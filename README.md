@@ -311,7 +311,7 @@ docker compose --env-file .env.production -f docker-compose.production.yml up -d
 docker compose --env-file .env.production -f docker-compose.production.yml exec sgp-app npm run generate:pages
 ```
 
-The `generate:pages` script runs the Next.js compile phase and then the experimental generate phase against the database. It runs inside the existing app container and writes to the persistent `.next` volume, so no separate generator image or container is created. Run it during a maintenance window because it updates build output used by the running server. Restart the app after generation completes:
+The production image includes the app's `src` files and `tsconfig.json` so the `generate:pages` script can run inside the existing app container. It runs the Next.js compile phase and then the experimental generate phase against the database, writing to the persistent `.next` volume; no separate generator image or container is created. Run it during a maintenance window because it updates build output used by the running server. Restart the app after generation completes:
 
 ```bash
 docker compose --env-file .env.production -f docker-compose.production.yml exec sgp-app npm run generate:pages
