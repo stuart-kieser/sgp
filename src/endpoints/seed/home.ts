@@ -47,7 +47,7 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
                   format: 0,
                   mode: 'normal',
                   style: '',
-                  text: 'Payload Website Template',
+                  text: 'SG Performance',
                   version: 1,
                 },
               ],
@@ -666,9 +666,10 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
       },
     ],
     meta: {
-      description: 'An open-source website built with Payload and Next.js.',
+      description:
+        'SG Performance specialises in maintenance, diagnostics, ECU tuning, turbo conversions and performance builds.',
       image: heroImage.id,
-      title: 'Payload Website Template',
+      title: 'SG Performance | Automotive Services & Performance Builds',
     },
     title: 'Home',
   }

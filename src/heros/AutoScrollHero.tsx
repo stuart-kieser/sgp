@@ -75,13 +75,13 @@ export const AutoScrollHero: React.FC<Page['hero']> = ({ scrollSpeed, slides }) 
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-black/10" />
             <div className="container relative flex min-h-[540px] items-end pb-24 pt-28 md:min-h-[680px] md:items-center md:pb-20">
-              <div className="max-w-3xl">
+              <div className="w-full max-w-3xl">
                 {slide.eyebrow ? (
                   <p className="mb-5 text-sm font-semibold uppercase tracking-[0.14em] text-white/80">
                     {slide.eyebrow}
                   </p>
                 ) : null}
-                <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-white md:text-6xl font-sabre">
+                <h1 className="w-full max-w-full break-words text-3xl font-semibold leading-tight text-white md:max-w-3xl md:text-6xl font-sabre">
                   {slide.title}
                 </h1>
                 {slide.description ? (
